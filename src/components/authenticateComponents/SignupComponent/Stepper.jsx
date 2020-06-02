@@ -9,18 +9,18 @@ import PhoneForm from './PhoneForm'
 import NameForm from './NameForm'
 import Message from './Message'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  backButton: {
-    marginRight: theme.spacing(1),
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: '100%',
+//   },
+//   backButton: {
+//     marginRight: theme.spacing(1),
+//   },
+//   instructions: {
+//     marginTop: theme.spacing(1),
+//     marginBottom: theme.spacing(1),
+//   },
+// }));
 
 function getSteps() {
   return ['Enter a Valid Email', 'Enter Your Name','Enter a Valid Phone Number','Create a Strong Password'];
@@ -44,7 +44,7 @@ function getStepContent(stepIndex,back,next,steps,reset,data,setdata) {
 }
 
 function SignupStepper(){
-  const classes = useStyles();
+  //const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
   const [data,setdata] = React.useState({})
@@ -63,18 +63,18 @@ function SignupStepper(){
   };
 
   return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel>
+    <>
+      <Stepper className='px-0' activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <div className='px-4'>
+      <div>
           {getStepContent(activeStep,handleBack,handleNext,steps,handleReset,data,setdata)}
       </div>
-    </div>
+    </>
   );
 }
 

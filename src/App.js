@@ -5,7 +5,7 @@ import ServerError from './components/utilComponents/ServerError'
 import Page404 from './containers/Page404'
 import LandingPage from './containers/LandingPage'
 import Authenticate from './containers/Authenticate'
-import VerifyEmail from './containers/VerifyEmail'
+import Verify from './containers/Verify'
 import ResetPassword from './containers/ResetPassword'
 import Dashboard from './containers/Dashboard'
 import Contact from './containers/Contact'
@@ -30,11 +30,9 @@ function App(props) {
      })
      .then(res=>{
           if(res.data.logged_in){
-            console.log('exec')
               props.setCurrentUser(res.data)
               resetScreen({...screen,loading:false})
           }else{
-            console.log('nl')
             setTimeout(()=>{
             resetScreen({...screen,loading:false})
             },2000)
@@ -71,8 +69,13 @@ function App(props) {
                   <Route path='/verifyemail' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
-                        return <VerifyEmail token = {token} />
+                        return <Verify type='verified' token = {token} />
                       }}/>
+                  <Route exact path='/approval' component={(prop)=>{
+                        const val = querystring.parse(prop.location.search)
+                        const token = val.token
+                        return <Verify type='approved' token = {token} />
+                      }}/>/>
                   <Route exact path='/contact' component={Contact} />
                   <Route exact path='/about' component={About} />
                   <Route component={Page404}/>

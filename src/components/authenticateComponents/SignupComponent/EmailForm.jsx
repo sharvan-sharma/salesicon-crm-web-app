@@ -25,6 +25,8 @@ function EmailForm(props){
                 props.next()
             }else if(result.data.status === 422){
                 seterr({exist:1,msg:'Email Address is already registered'})
+            }else if(result.data.status === 423){
+                seterr({exist:1,msg:'Email Address is invalid'})
             }else{
                 seterr({exist:1,msg:'Something Went wrong at our end!!!'})
             }
@@ -37,7 +39,7 @@ function EmailForm(props){
 return (<Fade in={true}>
             <form onSubmit={submitForm}>
             {(progress)?<LinearProgress/>:<></>}
-            <label className='h4'>Enter Your Email</label>
+            <label className='my-2 col-12 text-center text-3 ff-mst fmd'>Enter Your Email</label>
             <div className='form-group'>
                     <TextField
                         inputRef={email}
@@ -49,12 +51,12 @@ return (<Fade in={true}>
                         required
                         />
                     </div>
-            {(err.exist === 1)?<Alert severity='error' className='fsm'>{err.msg}</Alert>:<></>}
+            {(err.exist === 1)?<Alert severity='error' variant='filled' className='fsm'>{err.msg}</Alert>:<></>}
             <div className='d-flex justify-content-between my-2'>
-              <button className='btn btn-outline-dark' disabled={props.stepIndex === 0 || progress} onClick={props.back}>
+              <button className='btn btn-outline-3' disabled={props.stepIndex === 0 || progress} onClick={props.back}>
                 Back
               </button>
-              <button variant="contained" color="primary" className='btn btn-dark' disabled={progress} type='submit' >
+              <button variant="contained" color="primary" className='btn btn-3' disabled={progress} type='submit' >
                 Next
               </button>
             </div>

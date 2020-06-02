@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Roboto&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 .ff-mst{
     font-family: 'Montserrat', sans-serif;
 }
-
+.ff-ngt{
+    font-family: 'Nanum Gothic', sans-serif;
+}
 .ff-rbt{
     font-family: 'Roboto', sans-serif;
 }
@@ -64,6 +66,11 @@
     border-color: #6930C3;
 }
 /* bg-palette */
+
+.bg-gradient{
+    background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+}
+
 .bg-black{
     background-color:black;
 }
@@ -140,8 +147,16 @@
  align-items: center;
 }
 
+.rounded-lg{
+    border-radius: 30px;
+}
+
 @media only screen and (max-width:768px){
     /* .sidebar{
         width:15%;
     } */
+
+    .pc{
+        display:none !important
+    }
 }

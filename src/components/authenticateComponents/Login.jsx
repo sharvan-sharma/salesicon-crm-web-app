@@ -35,36 +35,41 @@ function LoginForm(props){
             }else if(status === 401){
                 setErr({...err,exist:1,msg:'Invalid Credentials'})
             }else if(status === 423){
-                setErr({...err,exist:1,msg:'Insufficient Data'})
+                setErr({...err,exist:1,msg:`Vaidation Error Type:${result.data.type}`})
             }else if(status === 422){
-                setErr({...err,exist:1,msg:'Unverified User'})
+                setErr({...err,exist:1,msg:`Your Account is not ${result.data.type} yet.`})
+            }else if(status === 455){
+                setErr({...err,exist:1,msg:`Your Account is Set To Inactive.`})
             }else if(status === 500){
-                setErr({...err,exist:1,msg:'server error'})
+                setErr({...err,exist:1,msg:'Something went wrong at our End,Please try again Later'})
             }
         })
         .catch(err=>{
             setprogress(false)
-            setErr({...err,exist:1,msg:'Server Error'})
+            setErr({...err,exist:1,msg:'Something went wrong at our End,Please try again Later'})
         })
     }
 
     return (
                 <Fade in={true} >
                 <form onSubmit={submitForm} className='px-4'>
-                    <label className='fmd py-3'>
-                       <Link to='/' className='text-decoration-none text-dark' >
-                           <FontAwesomeIcon icon={faChevronLeft}/>
-                        </Link> 
-                        <span> Already Have an Account? Signin 
-                        </span>
+                    <label className='my-3 ff-mst p-0 text-nowrap fmd col-12 d-flex justify-content-center'>
+                            <Link to='/' className='mr-2 text-3 text-decoration-none' >
+                                <FontAwesomeIcon icon={faChevronLeft}/>
+                            </Link> 
+                            <span >
+                                Already Have an Account?
+                            </span>
                     </label>
                     {(progress)?<div className='mb-2'><LinearProgress/></div>:<></>}
                     {(err.exist === 1)?
-                    <Alert severity='error' variant='filled' className='mb-2'>
-                        <span className='fm'>
-                            {err.msg}
-                        </span>
-                    </Alert>:<></>}
+                    <Fade in={true}>
+                        <Alert severity='error' variant='filled' className='mb-4'>
+                            <span className='fm'>
+                                {err.msg}
+                            </span>
+                        </Alert>
+                    </Fade>:<></>}
                     <div className='form-group'>
                     <TextField
                         fullWidth
@@ -88,16 +93,16 @@ function LoginForm(props){
                         />
                     </div>
                     <div className = 'form-group d-flex justify-content-between mb-3 '>
-                        <Link to='/forgotpassword'>Forgot Password ?</Link>
-                        <button className='btn btn-dark ' type='submit' disabled={progress}>Sign in</button>
+                        <Link to='/forgotpassword' className='btn btn-link fsm p-0'>Forgot Password ?</Link>
+                        <button className='btn btn-3' type='submit' disabled={progress}>Sign in</button>
                     </div>
                      {/* <p className='text-center my-2'>------------<span className='text-muted fm'> or </span>--------------</p>
                     <div className='d-flex justify-content-center m-3'>
                        <a href='https://noteskeeper-md.herokuapp.com/crypt/oauth/login' className='btn btn-dark btn-block' >
                            Login Using  <span><b>C</b></span>ry<span><b>P</b></span>t<span className='fm'>Oauth2.0</span></a>
                     </div> */}
-                    <div className='mt-5 mb-2 d-flex justify-content-center'>
-                        Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link>
+                    <div className='mt-5 fsm text-nowrap ff-mst d-flex justify-content-center'>
+                        <span>Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link></span>
                     </div>
                 </form>
             </Fade>)

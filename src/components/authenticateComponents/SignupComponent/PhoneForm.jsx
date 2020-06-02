@@ -5,7 +5,6 @@ import LinearProgress from '../../utilComponents/LinearProgress'
 import Fade from '@material-ui/core/Fade'
 import PhoneInput from 'react-phone-input-2'
 import {isPhone} from '../../../utils/validations/index'
-
 import 'react-phone-input-2/lib/material.css'
 
 
@@ -31,13 +30,13 @@ function PhoneForm(props){
         <Fade in={true}>
             <form onSubmit={submitForm}>
                 <div  className='d-flex flex-column align-items-center'>
-                    <label className='h4 my-4'>Enter Your Phone Number</label>
+                    <label className='my-2 col-12 text-center text-3 ff-mst'>Enter Your Phone Number</label>
                     <div className='form-group'>
                             <PhoneInput
                                 inputProps={{
                                     name: 'Phone Number',
                                     required: true,
-                                    autoFocus: true
+                                    autoFocus: true,
                                 }}
                                 onFocus={()=>seterr({exist:0,msg:''})}
                                 autoFormat={false}
@@ -46,18 +45,18 @@ function PhoneForm(props){
                                 onChange={(value,country,e,formattedValue)=>{
                                         setphone({value,ccode:country.dialCode,formattedValue})
                                     }}
-                        
+                                inputStyle={{width:'100%'}}
                                 enableSearch={true}
                             />
                     </div>
                 </div>
-                {(err.exist === 1)?<Alert severity='error' className='fsm'>{err.msg}</Alert>:<></>}
+                {(err.exist === 1)?<Alert severity='error'variant='filled' className='fsm'>{err.msg}</Alert>:<></>}
 
                 <div className='d-flex justify-content-between my-2'>
-                <button className='btn btn-outline-dark' disabled={props.stepIndex === 0} onClick={props.back}>
+                <button className='btn btn-outline-3' disabled={props.stepIndex === 0} onClick={props.back}>
                     Back
                 </button>
-                <button variant="contained" color="primary" className='btn btn-dark' disabled={(err.exist === 1)?true:false} type='submit' >
+                <button variant="contained" color="primary" className='btn btn-3' disabled={(err.exist === 1)?true:false} type='submit' >
                     Next
                 </button>
                 </div>

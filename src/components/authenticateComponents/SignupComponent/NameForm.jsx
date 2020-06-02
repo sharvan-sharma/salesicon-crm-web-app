@@ -1,29 +1,37 @@
-import React,{useRef} from 'react';
+import React,{useRef,useState} from 'react';
 import TextField from '@material-ui/core/TextField'
 import  Fade from '@material-ui/core/Fade'
+import {checkName} from '../../../utils/validations'
+import Alert from '@material-ui/lab/Alert'
 
 function NameForm(props){
 
   const fname = useRef('')
   const mname = useRef('')
   const lname = useRef('')
+  const [err,seterr] = useState({exist:false,msg:''})
 
   const submitForm = (e)=>{
     e.preventDefault()
-    props.setdata({...props.data,name:{
+    let name = {
       firstname:fname.current.value,
       middlename:mname.current.value || '',
       lastname: lname.current.value || ''
-    }})
-    props.next()
-
+    }
+    if(checkName(name)){
+      props.setdata({...props.data,name})
+      props.next()
+    }else{
+      seterr({exist:true,msg:'Firstname, MiddleName and LastName atmost contain 20 character each.'})
+    }
   }
 
 
 return (
 <Fade in={true}>
 < form onSubmit={submitForm}>
-            <label className='h4'>Enter Your Name</label>
+            <label className='my-2 col-12 text-center text-3 fmd ff-mst'>Enter Your Name</label>
+            {(err.exist)?<Alert variant='filled' severity='error' className='my-3'>{err.msg}</Alert>:<></>}
             <div className='form-group'>
                      <TextField
                         fullWidth
@@ -33,6 +41,7 @@ return (
                         type="text"
                         variant="outlined"
                         required
+                        onFocus={()=>seterr({exist:false,msg:''})}
                         />
             </div>
             <div className='form-group'>
@@ -43,7 +52,7 @@ return (
                         label="Middle Name"
                         type="text"
                         variant="outlined"
-                        
+                        onFocus={()=>seterr({exist:false,msg:''})}
                         />
             </div>
             <div className='form-group'>
@@ -54,13 +63,14 @@ return (
                         label='Last Name'
                         type="text"
                         variant="outlined"
+                        onFocus={()=>seterr({exist:false,msg:''})}
                         />
             </div>
             <div className='d-flex justify-content-between'>
-              <button className='btn btn-outline-dark' disabled={props.stepIndex === 0} onClick={props.back}>
+              <button className='btn btn-outline-3' disabled={props.stepIndex === 0} onClick={props.back}>
                 Back
               </button>
-              <button variant="contained" color="primary" className='btn btn-dark' type='submit'>
+              <button variant="contained" color="primary" className='btn btn-3' disabled={err.exist} type='submit'>
                 Next
               </button>
             </div>

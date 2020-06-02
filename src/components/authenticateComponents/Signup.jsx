@@ -8,19 +8,20 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 function Signup(props){
 return (    <Fade in={true} >
-                <>
-                    <label className='fmd py-3 px-4'>
-                       <Link to='/' className='text-decoration-none text-dark' >
-                           <FontAwesomeIcon icon={faChevronLeft}/>
-                        </Link> 
-                        <span> Don't have an Account ? Register
-                        </span>
+                <div className='px-4'>
+                    <label className='my-3 ff-mst text-nowrap p-0 fmd col-12 d-flex justify-content-center'>
+                            <Link to='/' className='mr-2 text-3 text-decoration-none ' >
+                                <FontAwesomeIcon icon={faChevronLeft}/>
+                            </Link> 
+                            <span >
+                                Don't Have an Account?
+                            </span>
                     </label>
                     <Stepper/>
-                    <div className='mt-5 mb-2 d-flex justify-content-center'>
-                        Already have an Account?<Link to='/login' className='text-decoration-none'>Signin here</Link>
+                    <div className='mt-5 mb-2 fsm text-nowrap ff-mst d-flex justify-content-center'>
+                        <span>Already have an Account?<Link to='/login' className='text-decoration-none'>Signin here</Link></span>
                     </div>
-                </>
+                </div>
             </Fade>)
 }
 

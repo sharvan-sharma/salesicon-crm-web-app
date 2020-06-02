@@ -76,7 +76,7 @@ function PasswordForm(props){
 
 return (<Fade in={true}>
         <form onSubmit={submitForm}>
-            <label className='h4'>Create A Password</label>
+            <label className='my-2 col-12 text-center text-3 ff-mst'>Create A Password</label>
             <Tooltip arrow title={
                     <div className='text-white'>
                     <p>Do's</p>
@@ -94,7 +94,7 @@ return (<Fade in={true}>
                     </ul>
                     </div>
                 }>
-                    <p className='fm text-info'>What Exactly is a Strong Password ?</p>
+                    <p className='fsm text-info text-center'>What Exactly is a Strong Password ?</p>
                 </Tooltip>
              {(meter.exist === 1)?meter.component():<></>}
             <div className='form-group'>
@@ -107,10 +107,11 @@ return (<Fade in={true}>
                 label="Password"
                 type="password"
                 variant="outlined"
+                onFocus={()=>seterr({...err,password:{exist:0,msg:''}})}
                 required
               />
             </div>
-            {(err.password.exist === 1)?<Alert severity='error' className='fsm'>{err.password.msg}</Alert>:<></>}
+            {(err.password.exist === 1)?<Alert severity='error' variant='filled' className='fsm'>{err.password.msg}</Alert>:<></>}
             <div className='form-group mt-2'>
               <TextField
                 fullWidth
@@ -120,12 +121,13 @@ return (<Fade in={true}>
                 label="Confirm Password"
                 type="password"
                 variant="outlined"
+                onFocus={()=>seterr({...err,cnfpassword:{exist:0,msg:''}})}
                 required
               />
             </div>
-            {(err.cnfpassword.exist === 1)?<Alert severity='error' className='fsm'>{err.cnfpassword.msg}</Alert>:<></>}
+            {(err.cnfpassword.exist === 1)?<Alert severity='error' variant='filled' className='fsm'>{err.cnfpassword.msg}</Alert>:<></>}
             <div className='d-flex justify-content-between my-2'>
-               {(props.back)?<button className='btn btn-outline-dark' disabled={props.stepIndex === 0} onClick={props.back}>
+               {(props.back)?<button className='btn btn-outline-3' disabled={props.stepIndex === 0} onClick={props.back}>
                 Back
               </button>:<></>}
               <div className='d-flex'>
@@ -133,7 +135,7 @@ return (<Fade in={true}>
                   Reset
                 </button>:<></>}
                 <button variant="contained" color="primary" disabled={(err.password.exist === 1 || err.cnfpassword.exist === 1)?true:false} 
-                className='btn btn-dark' type='submit' >
+                className='btn btn-3' type='submit' >
                   {(props.reset)?'Sign Up':'Change Password'}
                 </button>
               </div>

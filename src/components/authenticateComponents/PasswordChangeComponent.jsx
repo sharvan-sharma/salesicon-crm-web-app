@@ -13,21 +13,23 @@ function PasswordChangeComponent(props){
     const [progress,setprogress] = useState(false)
 
     const setdata = (obj)=>{
+        console.log(obj)
         setprogress(true)
-        axios.post('/changepassword',obj,{withCredentials:true})
+        seterr({exist:0,msg:''})
+        axios.post('/staffapi/changepassword',obj,{withCredentials:true})
         .then(result=>{
             setprogress(false)
             switch(result.data.status){
                  case 200 :  props.setCurrentUser(result.data);break;
-                 case 500 :  seterr({exist:1,msg:'server error'});break;
-                 case 423 :  seterr({exist:1,msg:'Insufficient data'});break;
-                 case 401 :  seterr({exist:1,msg:'unauthorized'});break;
+                 case 500 :  seterr({exist:1,msg:'Something went wrong at our End'});break;
+                 case 423 :  seterr({exist:1,msg:`validation error Type:${result.data.type}`});break;
+                 case 401 :  seterr({exist:1,msg:'unauthorized Access'});break;
                  default : return ''
             }
         })
         .catch(err=>{
             setprogress(false)
-            seterr({exist:1,msg:'server error'})
+            seterr({exist:1,msg:'Something went wrong at our End'})
         })
     }
 

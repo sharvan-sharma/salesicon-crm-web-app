@@ -17,7 +17,7 @@ function ForgotPasswordForm(props){
     const submitForm = (e)=>{
         setprogress(true)
         e.preventDefault()
-        axios.post('/forgotpwd',
+        axios.post('/staffapi/forgotpassword',
         {email:email.current.value},
         {withCredentials:true})
         .then(result=>{
@@ -26,9 +26,13 @@ function ForgotPasswordForm(props){
             if(status === 200){
                 setMessage(true)
             }else if(status === 422 ){
+                setErr({exist:1,msg:`Your Account is not ${result.data.type} yet. You can Change Password After Approval`})
+            }else if(status === 455 ){
+                setErr({exist:1,msg:'Your account is set to Inactive.You can change Password After account set to Active'})
+            }else if(status === 401 ){
                 setErr({exist:1,msg:'Email is not Registered with us'})
             }else if(status === 423){
-                setErr({exist:1,msg:'Insufficent Data'})
+                setErr({exist:1,msg:`Validation Error Type:${result.data.type}`})
             }else if(status === 500){
                 setErr({exist:1,msg:'Server Error'})
             }
@@ -52,10 +56,11 @@ return (    <Fade in={true} >
                     </Alert>
                     </div>
                     :<>
-                    <label className='h4 mt-5 mb-3'>Enter Your Registered Email</label>
+                    <label className='my-2 p-0 ff-mst text-nowrap col-12 text-center'>Enter Your Registered Email</label>
+                    <label className='text-muted col-12 text-center fsm ff-mst'>Password Reset Link will be sent to Registered Email</label>
                     {(progress)?<div className='mb-3'><LinearProgress/></div>:<></>}
-                    {(err.exist === 1)?<Alert severity='error' className='mb-3' >{err.msg}</Alert>:<></>}
-                    <div className='form-group'>
+                    {(err.exist === 1)?<Alert severity='error' variant='filled' className='mb-4' >{err.msg}</Alert>:<></>}
+                    <div className='form-group p-0'>
                         <TextField
                             fullWidth
                             inputRef={email}
@@ -67,12 +72,12 @@ return (    <Fade in={true} >
                             />
                     </div>
                     <div className = 'form-group d-flex justify-content-between mb-5 pb-5'>
-                        <Link to='/login' className='btn btn-outline-dark'>Cancel</Link>
-                        <button className='btn btn-dark ' type='submit' disabled={progress}>Send password Reset Link</button>
+                        <Link to='/login' className='btn btn-outline-3'>Cancel</Link>
+                        <button className='btn btn-3 ' type='submit' disabled={progress}>Send</button>
                     </div>
                       </>}
-                    <div className='mt-5 mb-2 d-flex justify-content-center'>
-                        Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link>
+                    <div className='mt-5 fsm text-nowrap ff-mst d-flex justify-content-center'>
+                        <span>Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link></span>
                     </div>
                 </form>
             </Fade>)

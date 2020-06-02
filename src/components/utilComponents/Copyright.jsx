@@ -6,7 +6,7 @@ export default function Copyrights(){
     return (<>
         <span>&copy; {(new Date()).getFullYear()} | <b>S</b>ales<b>I</b>con </span> 
         <a className='text-dark text-decoration-none' href="https://github.com/sharvan-sharma">
-            <FontAwesomeIcon icon={faGithub} className='mr-2'/>sharvan-sharma |
+            <FontAwesomeIcon icon={faGithub} className='mr-2'/>sharvan-sharma 
         </a> 
     </>)
 }
