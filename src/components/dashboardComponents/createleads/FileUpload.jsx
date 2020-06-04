@@ -7,14 +7,14 @@ export default function App(props) {
   const [state, setstate] = useState({error:false,filename:'',exist:false,msg:''});
   const handleDrop = acceptedFiles =>{
     if(acceptedFiles.length === 1){
-      if(acceptedFiles[0].name.split('.').pop() === 'md'){
+      if(acceptedFiles[0].name.split('.').pop() === 'xls'){
         setstate({...state,filename:acceptedFiles[0].name,exist:true})
-        //props.setFile(acceptedFiles[0] || null);
+        props.setFile(acceptedFiles[0] || null);
       }else{
-        setstate({...state,error:true,msg:'Only Markdown Files are acceptable, if you have textual data then save it to .md file'})
+        setstate({...state,error:true,msg:'Only .xls Files are acceptable'})
       }
     }else{
-      setstate({...state,error:true,msg:'select a file which is markdown and size less than 50kb'})
+      setstate({...state,error:true,msg:'select a file which is xls and size less than 50kb'})
     }
   }
 
@@ -47,7 +47,7 @@ export default function App(props) {
             <>
               {
                 (state.exist)?
-                <Alert severity='success' variant='filled' className='my-1' key={state.filename}>{state.filename}</Alert>:
+                <Alert severity='info' variant='filled' className='my-1' key={state.filename}>{state.filename} selected to upload</Alert>:
                 <></>
               }
            </>

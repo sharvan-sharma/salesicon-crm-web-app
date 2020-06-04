@@ -1,0 +1,3 @@
+export default {
+    SET_PRODUCTS_OBJECT:'SET_PRODUCTS_OBJECT'
+}

@@ -1,0 +1,8 @@
+const campaignsActionTypes = {
+    SET_CAMPAIGNS_OBJECT:'SET_CAMPAIGNS_OBJECT',
+    ADD_CAMPAIGN:'ADD_CAMPAIGN',
+    EDIT_CAMPAIGN:'EDIT_CAMPAIGN',
+    DELETE_CAMPAIGN:'DELETE_CAMPAIGN'
+}
+
+export default campaignsActionTypes

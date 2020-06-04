@@ -60,7 +60,7 @@ export default function MenuListComposition() {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          Filters
+          Sort
         </Button>
         <Popper style={{zIndex:2}}  open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
@@ -71,9 +71,8 @@ export default function MenuListComposition() {
               <Paper >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}>Name</MenuItem>
+                    <MenuItem onClick={handleClose}>Date</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

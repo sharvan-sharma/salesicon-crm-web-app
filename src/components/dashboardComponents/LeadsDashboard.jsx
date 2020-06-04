@@ -3,7 +3,6 @@ import LeadsTable from './leadsdashboard/LeadsTable'
 import Lead from './leadsdashboard/Lead'
 
 function LeadsDashboard(props){
-    useEffect(() =>  props.setactive(), [])
 
     const [openlead,setOpenLead] = useState({open:false,lead_id:null})
 

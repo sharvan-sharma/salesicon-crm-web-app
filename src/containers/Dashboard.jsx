@@ -59,33 +59,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResponsiveDrawer(props) {
-  const { window } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [active,setactive] = React.useState(0)
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const linksArray = [{text:'Dasboard',to:'/',content:0},
+const linksArray = [{text:'Dasboard',to:'/',content:0},
                       {text:'Campaigns',to:'/campaigns',content:0},
                       {text:'Add Leads',to:'/addleads',content:0}]
 
-  const createdrawer = (type)=>(
+const CreateDrawer = (props)=>{return (
     <div className='bg-black text-white d-flex flex-column justify-content-between' style={{minHeight:'100vh'}}>
       <div>
          <div className='px-3 pt-4 d-flex text-white align-items-center justify-content-between'>
              <Brand color='light'/>
              <div className='mbl'>
-                <IconButton size='small' color='inherit' onClick={handleDrawerToggle}>
+                <IconButton size='small' color='inherit' onClick={props.handleDrawerToggle}>
                     <CancelIcon/>
                 </IconButton>
             </div>
         </div>
-         <DBProfile setactive={setactive}/>
+         <DBProfile />
          <div className='hr-3 col-12' ></div>
          <ul className='list-unstyled my-2'>
                 {linksArray.map((link, index) => {
@@ -95,18 +84,17 @@ function ResponsiveDrawer(props) {
                     return (
                         <li key={link.text} index={index}  
                             onClick={()=>{
-                                           setactive(index)
-                                           if(type ==='mbl')
-                                           {setTimeout(()=>{handleDrawerToggle()},500)}
+                                           if(props.type ==='mbl')
+                                           {setTimeout(()=>{props.handleDrawerToggle()},500)}
                                         }}
                              className='p-2 ff-mst d-flex justify-content-center'>
                             {(link.content !== 0)?<Badge badgeContent={link.content} color='secondary'>
-                                <Link className={(index === active)?activeClass:inactiveClass}
+                                <Link className={(index === props.screen)?activeClass:inactiveClass}
                                     to={link.to}>
                                     {link.text}
                                 </Link>
                             </Badge>:
-                            <Link className={(index === active)?activeClass:inactiveClass}
+                            <Link className={(index === props.screen)?activeClass:inactiveClass}
                                     to={link.to}>
                                     {link.text}
                             </Link>}
@@ -128,7 +116,21 @@ function ResponsiveDrawer(props) {
         </a> 
       </div>
     </div>
-  );
+  )};
+
+function ResponsiveDrawer(props) {
+  const { window } = props;
+  const classes = useStyles();
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  
+
+  
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -167,7 +169,7 @@ function ResponsiveDrawer(props) {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            {createdrawer('mbl')}
+            <CreateDrawer screen={props.screen} type='mbl' handleDrawerToggle={handleDrawerToggle} />
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -178,22 +180,38 @@ function ResponsiveDrawer(props) {
             variant="permanent"
             open
           >
-            {createdrawer('pc')}
+            <CreateDrawer screen={props.screen} type='pc' handleDrawerToggle={handleDrawerToggle} />
           </Drawer>
         </Hidden>
       </nav>
       <main className={classes.content} style={{backgroundColor:'white',minHeight:'100vh'}}>
         <div className={classes.toolbar} />
-        <Switch>
-            <Route exact path='/' component={()=><LeadsDashboard setactive={()=>setactive(0)}/>} />
-            <Route exact path='/campaigns' component={()=><Campaigns setactive={()=>setactive(1)}/>} />
-            <Route exact path='/addleads' component={()=><CreateLeads setactive={()=>setactive(2)}/>} />
-            <Route exact path='/profile' component={()=><Profile setactive={()=>setactive(-1)}/>} />
-        </Switch>
+        <TabScreen screen = {props.screen} />
       </main>
     </div>
   );
 }
 
+const TabScreen = (props)=>{
+  switch(props.screen){
+    case -1: return <Profile/>
+    case 0: return <LeadsDashboard />
+    case 1: return <Campaigns/> 
+    case 2: return <CreateLeads/>
+    default: return <LeadsDashboard/>
+  }
+}
 
-export default ResponsiveDrawer;
+const DashboardRouter = ()=>{
+  return (
+        <Switch>
+            <Route exact path='/' component={()=><ResponsiveDrawer screen={0}/> } />
+            <Route exact path='/campaigns' component={()=><ResponsiveDrawer screen={1}/>} />
+            <Route exact path='/addleads' component={()=><ResponsiveDrawer screen={2}/>} />
+            <Route exact path='/profile' component={()=><ResponsiveDrawer screen={-1}/>} />
+        </Switch>
+  )
+}
+
+
+export default DashboardRouter;

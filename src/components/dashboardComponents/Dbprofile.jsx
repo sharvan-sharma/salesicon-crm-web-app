@@ -17,7 +17,7 @@ return (<>
             </div>
             <ul className='list-unstyled my-1'>
                     <li className='ff-mst fsm text-white-50'>{props.user.email}</li>
-                    <li><Link to='/profile' onClick={()=>{props.setactive(-1)}} className='fsm ff-mst text-decoration-none'>View Profile</Link></li>
+                    <li><Link to='/profile' className='fsm ff-mst text-decoration-none'>View Profile</Link></li>
             </ul>
         </div>
         </>)

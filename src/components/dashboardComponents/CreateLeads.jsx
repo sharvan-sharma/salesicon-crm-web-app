@@ -1,11 +1,48 @@
 import React,{useEffect,useState} from 'react'
 import FileUpload from './createleads/FileUpload'
+import {connect} from 'react-redux'
+import axios from 'axios'
+import Alert from '@material-ui/lab/Alert'
+import CircularProgress from '../utilComponents/CircularProgress'
+import MessageSnackbar from '../utilComponents/MessageSnackbar'
 
 function CreateLeads(props){
-    useEffect(() =>  props.setactive(), [])
+
     const [active,setactive] = useState(1)
+    const [file,setFile] = useState(null)
+    const [fileError,setFileError] = useState(false)
+    const [err,seterr]= useState({exist:false,msg:''})
+    const [progress,setprogress] = useState(false)
+    const [success,setsuccess] = useState({exist:false,msg:''})
+
+    const uploadFile = ()=>{
+        if(file === null){
+            setFileError(true)
+        }else{
+            setprogress(true)
+            let formData = new FormData()
+            formData.append('data',file)
+            axios.post('/staffapi/lead/createmultiple',formData,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}})
+            .then(result=>{
+                setprogress(false)
+                switch(result.data.status){
+                    case 455 : seterr({exist:true,msg:'file size limit exceeds'});break;
+                    case 200 : setsuccess({exist:true,msg:'mails scheduled'});break;
+                    case 403 : seterr({exist:true,msg:'unauthorised to add leads'});break;
+                    case 500 : seterr({exist:true,msg:'server error'});break;
+                    default:console.log('default exec')
+                }
+            })
+            .catch(err=>{
+                setprogress(false)
+                seterr({exist:true,msg:'server error'})
+            })
+        }
+    }
+
     let activeClass= 'btn btn-3 fsm mr-2'
     let inactiveClass= 'btn btn-light fsm mr-2'
+
 return (<>
         <div className='d-flex my-2'>
             <button className={(active === 1)?activeClass:inactiveClass} onClick={()=>setactive(1)}>Multiple Leads (xls)</button>
@@ -19,12 +56,22 @@ return (<>
                 <button className='btn btn-3 fsm text-nowrap'>Download Template Xls File</button>
             </div>
             <div className='my-2'>
-                <FileUpload/>
+                <FileUpload setFile={setFile} />
             </div>
-            <div className='d-flex '>
-                <button className='btn btn-outline-3 mr-2'>Cancel</button>
-                <button className='btn btn-3'>Upload</button>
+            {(fileError)?
+            <div className='my-2'>
+                <Alert severity='error' variant='filled'>No File Selected</Alert>
+            </div>:<></>}
+            <div className='d-flex my-2'>
+                <button disabled={progress} className='btn btn-outline-3 mr-2' onClick={()=>setFile(null)}>Cancel</button>
+                {(progress)?<CircularProgress/>:<button disabled={progress} onClick={uploadFile}  className='btn btn-3'>Upload</button>}
             </div>
+            {(err.exist)?
+            <div className='my-2'>
+                <Alert severity='error' variant='filled'>{err.msg}</Alert>
+            </div>:<></>}
+             {(success.exist)?
+            <MessageSnackbar show={true} message={success.msg} />:<></>}
         </div>:<></>}
         {(active === 2)?
         <div className='my-2'>
@@ -66,9 +113,9 @@ return (<>
                         Interested In
                     </button>
                     <div className="dropdown-menu dropdown-menu-right">
-                        <button className="dropdown-item" type="button">Product-1</button>
-                        <button className="dropdown-item" type="button">Product-2</button>
-                        <button className="dropdown-item" type="button">Product-3</button>
+                        {
+                            Object.entries(props.productsObject).map(item=><button key={item[0]} className="dropdown-item" type="button">{item[1].name}</button>)
+                        }
                     </div>
                 </div>
                 <div className="form-group">
@@ -76,9 +123,9 @@ return (<>
                         Campaign
                     </button>
                     <div className="dropdown-menu dropdown-menu-right">
-                        <button className="dropdown-item" type="button">Campaign-1</button>
-                        <button className="dropdown-item" type="button">Campaign-2</button>
-                        <button className="dropdown-item" type="button">Campaign-3</button>
+                        {
+                            Object.entries(props.campaignsObject).map(item=><button key={item[0]} className="dropdown-item" type="button">{item[1].name}</button>)
+                        }
                     </div>
                 </div>
               
@@ -95,4 +142,9 @@ return (<>
 </>)
 }
 
-export default CreateLeads;
+const mapStateToProps = state=>({
+    productsObject:state.products.productsObject,
+    campaignsObject:state.campaigns.campaignsObject
+})
+
+export default connect(mapStateToProps)(CreateLeads);

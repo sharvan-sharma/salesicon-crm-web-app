@@ -12,29 +12,29 @@ return (
                     <>
                     <div className='col-12 col-lg-6'>
                         <div className='text-dark fmd'>Name</div>
-                        <div className='text-1 ff-mst'>{props.name.firstname} {props.name.middlename} {props.name.lastname}</div>
+                        <div className='text-1 ff-mst'>{props.lead.name.firstname} {props.lead.name.middlename} {props.lead.name.lastname}</div>
                     </div>
                      <div className='col-12'>
                         <div className='text-dark fmd'>Email</div>
-                        <div className='text-1 ff-mst'>{props.email}</div>
+                        <div className='text-1 ff-mst'>{props.lead.email}</div>
                     </div>
                      <div className='col-12 col-lg-6'>
                         <div className='text-dark fmd'>Phone Number</div>
-                        <div className='text-1 ff-mst'>{props.phone}</div>
+                        <div className='text-1 ff-mst'>{props.lead.phone}</div>
                     </div>
                      <div className='col-12 col-lg-6'>
                         <div className='text-dark fmd'>Date Of birth</div>
-                        <div className='text-1 ff-mst'>{props.dob}</div>
+                        <div className='text-1 ff-mst'>{props.lead.dob}</div>
                     </div>
                      <div className='col-12 col-lg-6'>
                         <div className='text-dark fmd'>Location</div>
-                        <div className='text-1 ff-mst'>{props.location}</div>
+                        <div className='text-1 ff-mst'>{props.lead.location}</div>
                     </div>
                     <div className='col-12 col-lg-6'>
                         <div className='text-dark fmd'>Interested In</div>
                         <div className='d-flex flex-wrap'>
                             {
-                             props.interested_in.map((product,index)=><label key={index} className='text-1 m-1 ff-mst'>{product}</label>)
+                             props.lead.interested_in.map((product,index)=><label key={index} className='text-1 m-1 ff-mst'>{product}</label>)
                             }
                         </div>
                     </div>
@@ -42,14 +42,7 @@ return (
 )
 }
 
-let lead = {
-    name:{firstname:'Sharvan',middlename:'',lastname:'Sharma'},
-    email:'sharvansharma518@gmail.com',
-    phone:'8437898665',
-    dob:'10/9/1998',
-    location:'New Delhi, India',
-    interested_in:['Product1','Product2','Product3']
-}
+
 
 let interaction = {datetime:'20/4/2020 13:42',response_type:'Positive',score:7,remarks:'Dummy Remarks are added for design purpose'}
 
@@ -88,7 +81,7 @@ function Lead(props){
             <div className='hr-3'></div>
             <div className='d-flex flex-wrap'>
                 <div className='col-12 col-md-4 col-lg-4 col-xl-4 py-4 my-4 shadow-lg d-flex flex-wrap justify-content-start' style={{height:'60vh'}}>
-                    {LeadProfile(lead)}
+                    <LeadProfile lead={props.lead} />
                 </div>
                 <div className='col-12 col-md-8 col-lg-8 col-xl-8 my-4  '  >
                     <div className='d-flex justify-content-between'>
