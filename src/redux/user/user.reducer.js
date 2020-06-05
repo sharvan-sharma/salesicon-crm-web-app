@@ -8,6 +8,9 @@ const INITIAL_STATE = {
         lastname: null
     },
     email: null,
+    phone:null,
+    photo:null,
+    id:null
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -17,8 +20,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 logged_in: action.payload.logged_in,
                 name: action.payload.name,
-                email: action.payload.email
+                email: action.payload.email,
+                phone:action.payload.phone,
+                photo:action.payload.photo,
+                id:action.payload.id
             });
+        case userActionTypes.SET_USER_PHOTO:
+            return ({
+                ...state,
+                photo:action.payload
+            })
         default:
             return state
     }

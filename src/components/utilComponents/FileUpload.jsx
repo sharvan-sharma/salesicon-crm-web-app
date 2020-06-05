@@ -3,25 +3,38 @@ import React, { useState } from "react";
 import Alert from '@material-ui/lab/Alert'
 import Dropzone from "react-dropzone";
 
+const fileType = {
+  image:{
+    type:['jpg','png','bmp'],
+    typeErrorMessage:'Only .jpg, .png and .bmp files are acceptable',
+    lengthErrorMessage:'select a file which is (.jpg, .png or .bmp) and size less than'
+  },
+  xls:{
+     type:['xls'],
+    typeErrorMessage:'Only .xls files are acceptable',
+    lengthErrorMessage:'select a file which is xls and size less than'
+  }
+}
+
 export default function App(props) {
   const [state, setstate] = useState({error:false,filename:'',exist:false,msg:''});
   const handleDrop = acceptedFiles =>{
     if(acceptedFiles.length === 1){
-      if(acceptedFiles[0].name.split('.').pop() === 'xls'){
+      if(fileType[props.fileType].type.includes(acceptedFiles[0].name.split('.').pop())){
         setstate({...state,filename:acceptedFiles[0].name,exist:true})
         props.setFile(acceptedFiles[0] || null);
       }else{
-        setstate({...state,error:true,msg:'Only .xls Files are acceptable'})
+        setstate({...state,error:true,msg:fileType[props.fileType].typeErrorMessage})
       }
     }else{
-      setstate({...state,error:true,msg:'select a file which is xls and size less than 50kb'})
+      setstate({...state,error:true,msg:fileType[props.fileType].lengthErrorMessage+` ${props.maxSize/1000}kb`})
     }
   }
 
   return (
     <div className="App">
       <Dropzone onDrop={handleDrop} 
-        maxSize={50000}
+        maxSize={props.maxSize}
         multiple={false}>
         {({ 
           getRootProps, 
@@ -34,7 +47,7 @@ export default function App(props) {
            return (
                     <div {...getRootProps({ className: ` ${(isDragAccept)?'accept':''} ${(isDragReject)?'reject':''} ${(isDragActive)?'active':''} ${(isDragActive || isDragReject || isDragAccept)?'':'dropzone'}` })}>
                       <input {...getInputProps()} />
-                      <p>Drag'n'drop or click to select  your text or markdown file</p>
+                      <p>Drag'n'drop or click to select  your {props.fileType} file</p>
                     </div>
                   )
         }

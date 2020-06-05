@@ -10,7 +10,7 @@ return (<>
         
         <div className='p-3'>
             <div className='d-flex align-items-center'>
-                <img src='/logo192.png' className='img-fluid mr-2' style={{width:'30px',height:'30px'}} /> 
+                <img src={(props.user.photo === null)?'/avatar.jpg':`http://localhost:5000${props.user.photo}`} className='img-fluid mr-2' style={{width:'30px',height:'30px'}} /> 
                 <ul className='list-unstyled m-0'>
                     <li className='ff-mst fsm'>{props.user.name.firstname} {props.user.name.lastname}</li>
                 </ul>

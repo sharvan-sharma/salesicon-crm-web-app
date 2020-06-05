@@ -1,0 +1,7 @@
+const leadInteractionActionTypes = {
+    SET_LEAD_INTERACTIONS_OBJECT:'SET_LEAD_INTERACTIONS_OBJECT',
+    ADD_LEAD_INTERACTION:'ADD_LEAD_INTERACTION',
+    EDIT_LEAD_INTERACTION:'EDIT_LEAD_INTERACTION',
+}
+
+export default leadInteractionActionTypes

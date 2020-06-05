@@ -10,13 +10,14 @@ import LinearProgress from '../../utilComponents/LinearProgress'
 import Brand from '../../utilComponents/Brand'
 import CircularProgress from '../../utilComponents/CircularProgress'
 
-const Lead = (props)=>{
+const LeadGrid = (props)=>{
     return (
-                    <div className='d-flex shadow p-2 my-4 rounded align-items-center justify-content-between'>
-                        <div className='ff-mst bold p-1'>{props.lead.name.firstname}</div>
-                        <div className='ff-mst bold'>{props.lead.email}</div>
-                        <div className='text-1 ff-mst'>{props.lead.phone}</div>
-                        <button className='btn btn-3' onClick={()=>props.setOpenLead({open:true,lead_id:props.lead._id})}>Open</button>
+                    <div className='d-flex shadow p-2 my-4 rounded flex-wrap align-items-center justify-content-between'>
+                        <div className='ff-mst bold '>{props.lead.name.firstname}</div>
+                        <div className='ff-mst bold '>{props.lead.email}</div>
+                        <div className='text-1 ff-mst '>{props.lead.phone}</div>
+                        <div className='ff-mst '>{(props.lead.status === 'A')?<span className='text-1'>Active</span>:<span className='text-danger'>Lead Closed</span>}</div>
+                        <button className='btn btn-3' onClick={()=>props.setOpenLead({open:true,lead:props.lead})}>Open</button>
                     </div>
     )
 }
@@ -80,7 +81,7 @@ function LeadsTable(props){
         
         <div className='col-12 my-4'>
             {
-                Object.entries(props.leadsObject).map((item)=><Lead key={item[0]}  lead={item[1]} setOpenLead={props.setOpenLead}/>)
+                Object.entries(props.leadsObject).map((item)=><LeadGrid key={item[0]}  lead={item[1]} setOpenLead={props.setOpenLead}/>)
             }
             {
                (Object.entries(props.leadsObject).length === 0)?

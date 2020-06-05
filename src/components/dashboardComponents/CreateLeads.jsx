@@ -1,14 +1,15 @@
 import React,{useEffect,useState} from 'react'
-import FileUpload from './createleads/FileUpload'
+import FileUpload from '../utilComponents/FileUpload'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert'
 import CircularProgress from '../utilComponents/CircularProgress'
 import MessageSnackbar from '../utilComponents/MessageSnackbar'
+import LeadForm from './createleads/LeadForm'
 
 function CreateLeads(props){
 
-    const [active,setactive] = useState(1)
+    const [active,setActive] = useState(1)
     const [file,setFile] = useState(null)
     const [fileError,setFileError] = useState(false)
     const [err,seterr]= useState({exist:false,msg:''})
@@ -45,18 +46,17 @@ function CreateLeads(props){
 
 return (<>
         <div className='d-flex my-2'>
-            <button className={(active === 1)?activeClass:inactiveClass} onClick={()=>setactive(1)}>Multiple Leads (xls)</button>
-            <button className={(active === 2)?activeClass:inactiveClass} onClick={()=>setactive(2)}>Single Lead</button>
+            <button className={(active === 1)?activeClass:inactiveClass} onClick={()=>setActive(1)}>Multiple Leads (xls)</button>
+            <button className={(active === 2)?activeClass:inactiveClass} onClick={()=>setActive(2)}>Single Lead</button>
         </div>
         <div className='hr-3'></div>
-        {(active === 1)?
-        <div className='my-2'>
+        {(active === 1)?<div className='my-2'>
             <div className='d-flex justify-content-between align-items-center flex-wrap'>
                 <label className='flg ff-mst m-0'>Upload a <span className='text-1'>.xls</span> file</label>
                 <button className='btn btn-3 fsm text-nowrap'>Download Template Xls File</button>
             </div>
             <div className='my-2'>
-                <FileUpload setFile={setFile} />
+                <FileUpload setFile={setFile} fileType='xls' maxSize={50000} />
             </div>
             {(fileError)?
             <div className='my-2'>
@@ -73,78 +73,9 @@ return (<>
              {(success.exist)?
             <MessageSnackbar show={true} message={success.msg} />:<></>}
         </div>:<></>}
-        {(active === 2)?
-        <div className='my-2'>
-            <div className='d-flex justify-content-between align-items-center flex-wrap'>
-                <label className='flg ff-mst m-0'>Add a <span className='text-1'>Lead</span></label>
-            </div>
-            <div className='my-2'>
-              <div className='col-12 p-0 col-md-10 col-lg-6 col-xl-6'>
-                <div className='form-group'>
-                    <label>First Name</label>
-                    <input className='form-control' required type='text' id='lfname'/>
-                </div>
-                <div className='form-group'>
-                    <label>Middle Name</label>
-                    <input className='form-control' required type='text' id='lmname'/>
-                </div>
-                <div className='form-group'>
-                    <label>Last Name</label>
-                    <input className='form-control' required type='text' id='llname'/>
-                </div>
-                <div className='form-group'>
-                    <label>Email</label>
-                    <input className='form-control' required type='email' id='email'/>
-                </div>
-                <div className='form-group'>
-                    <label>Phone Number</label>
-                    <input className='form-control' required type='text' id='pno'/>
-                </div>
-                <div className='form-group'>
-                    <label>Date of birth</label>
-                    <input className='form-control' required type='date' id='dob'/>
-                </div>
-                <div className='form-group'>
-                    <label>Location</label>
-                    <input className='form-control' required type='text' id='loc'/>
-                </div>
-                <div className="form-group">
-                    <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Interested In
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-right">
-                        {
-                            Object.entries(props.productsObject).map(item=><button key={item[0]} className="dropdown-item" type="button">{item[1].name}</button>)
-                        }
-                    </div>
-                </div>
-                <div className="form-group">
-                    <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Campaign
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-right">
-                        {
-                            Object.entries(props.campaignsObject).map(item=><button key={item[0]} className="dropdown-item" type="button">{item[1].name}</button>)
-                        }
-                    </div>
-                </div>
-              
-                <div className='d-flex justify-content-between'>
-                    <button className='btn btn-outline-danger mr-2'>Reset</button>
-                    <div>
-                        <button className='btn btn-outline-3 mr-2'>Cancel</button>
-                        <button className='btn btn-3'>Add</button>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </div>:<></>}
+        {(active === 2)?<LeadForm/>:<></>}
 </>)
 }
 
-const mapStateToProps = state=>({
-    productsObject:state.products.productsObject,
-    campaignsObject:state.campaigns.campaignsObject
-})
 
-export default connect(mapStateToProps)(CreateLeads);
+export default CreateLeads

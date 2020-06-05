@@ -5,6 +5,10 @@ const setCurrentUser = (userobject)=>({
        payload:userobject
 })
 
+const setUserPhoto = photo=>({
+       type:userActionTypes.SET_USER_PHOTO,
+       payload:photo
+})
 
 
-export {setCurrentUser}
+export {setCurrentUser,setUserPhoto}
