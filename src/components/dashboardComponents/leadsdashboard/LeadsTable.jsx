@@ -1,5 +1,4 @@
 import React,{useState,useEffect} from 'react'
-import ToggleMenu from '../campaigns/ToggleMenu'
 import SearchBar from '../Searchbar'
 import axios from 'axios'
 import {connect} from 'react-redux'
@@ -65,20 +64,8 @@ function LeadsTable(props){
         )
       }else{
         return (<>
-        <div className='col-12 fsm d-flex justify-content-between align-items-center flex-wrap'>
-            <div className='col-12 col-md-6 col-lg-6 p-0 fsm'>
-                <SearchBar/>
-            </div>
-            <div className='d-flex py-1 fsm'>
-                <div className='mr-2'>
-                    <ToggleMenu/>
-                </div>
-                <div className='mr-2'>
-                    <ToggleMenu/>
-                </div>
-            </div>
-        </div>
         
+        <SearchBar type='leads'/>
         <div className='col-12 my-4'>
             {
                 Object.entries(props.leadsObject).map((item)=><LeadGrid key={item[0]}  lead={item[1]} setOpenLead={props.setOpenLead}/>)

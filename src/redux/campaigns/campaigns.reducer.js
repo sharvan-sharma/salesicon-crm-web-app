@@ -31,10 +31,11 @@ promise.then(obj=>{
 const campaignsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case campaignsActionTypes.SET_CAMPAIGNS_OBJECT: {
+            let obj = {}
             action.payload.forEach((campaign)=>{
-                    state.campaignsObject[campaign._id] = campaign
+                    obj[campaign._id] = campaign
             })
-            return ({...state})
+            return ({...state,campaignsObject:obj})
         }
         case campaignsActionTypes.ADD_CAMPAIGN:{
             let obj = state.campaignsObject

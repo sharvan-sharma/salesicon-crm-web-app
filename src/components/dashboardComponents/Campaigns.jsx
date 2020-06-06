@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import ToggleMenu from './campaigns/ToggleMenu'
+import ToggleMenu from './searchbar/SearchBarFilters'
 import SearchBar from './Searchbar'
 import CampaignEditor from './campaigns/CampaignEditor'
 import IconButton from '@material-ui/core/IconButton'
@@ -127,25 +127,13 @@ function Campaigns(props){
         </div>
     )
   }else{
-    return (<>
-        <div className='col-12 fsm d-flex justify-content-between align-items-center flex-wrap'>
-            <div className='col-12 col-md-6 col-lg-6 p-0 fsm'>
-                <SearchBar/>
+    return (<> 
+            <SearchBar type='campaigns' />
+            <div className='col-12 my-2'>
+                <button className='btn btn-3 text-nowrap fsm' onClick={()=> openEditor({open:true,mode:'new',id:null})}>ADD NEW</button>
             </div>
-            <div className='d-flex py-1 fsm'>
-                <div className='mr-2'>
-                    <ToggleMenu/>
-                </div>
-                <div className='mr-2'>
-                    <ToggleMenu/>
-                </div>
-                <div>
-                    <button className='btn btn-3 text-nowrap fsm' onClick={()=> openEditor({open:true,mode:'new',id:null})}>ADD NEW</button>
-                </div>
-            </div>
-        </div>
         
-        <div className='col-12 my-4'>
+        <div className='col-12 my-2'>
             {
                 Object.entries(props.campaignsObject).map((item)=><Campaign key={item[0]} deleteCampaign={props.deleteCampaign} campaign={item[1]} openEditor={openEditor} />)
             }

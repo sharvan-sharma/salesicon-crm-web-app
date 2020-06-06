@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const linksArray = [{text:'Dasboard',to:'/',content:0},
+const linksArray = [{text:'Dashboard',to:'/',content:0},
                       {text:'Campaigns',to:'/campaigns',content:0},
                       {text:'Add Leads',to:'/addleads',content:0}]
 

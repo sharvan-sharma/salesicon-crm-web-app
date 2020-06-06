@@ -7,10 +7,11 @@ const INITIAL_STATE = {
 const leadsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case leadsActionTypes.SET_LEADS_OBJECT: {
+            let obj = {}
             action.payload.forEach((lead)=>{
-                    state.leadsObject[lead._id] = lead
+                    obj[lead._id] = lead
             })
-            return ({...state})
+            return ({...state,leadsObject:obj})
         }
         case leadsActionTypes.ADD_LEAD:{
             let obj = state.leadsObject

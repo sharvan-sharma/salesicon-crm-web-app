@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
+import CheckIcon  from '@material-ui/icons/Check'
 import AddIcon from '@material-ui/icons/Add'
 import CancelIcon from '@material-ui/icons/Cancel'
 import Fade from '@material-ui/core/Fade'
@@ -19,16 +20,30 @@ import CreateLeadInteraction from './lead/CreateLeadInteraction'
 import CircularProgress from '../../utilComponents/CircularProgress'
 
 
+const beautyfyDate = (date)=>{
+    let dummydate = new Date(date)
+    return dummydate.getDate()+'/'+dummydate.getMonth()+'/'+dummydate.getFullYear()
+}
+
 
 
 function Lead(props){
 
+    const remdate = useRef(new Date())
+
     const [add,setAdd] = useState(false)
     const [state,setstate] = useState({loading:true,error:false,msg:''})
     const [err,seterr] = useState({exist:false,msg:''})
+    const [err2,seterr2] = useState({exist:false,msg:''})
     const [progress,setprogress] = useState({on:false,bcode:null})
+    const [reminderMode,setReminderMode] = useState('unedit')
 
-
+    let date = new Date()
+    let year = date.getFullYear()
+    let month = ((date.getMonth()+1) < 10)?'0'+(date.getMonth()+1):(date.getMonth()+1)
+    let day = (date.getDate() < 10)?'0'+date.getDate():date.getDate()
+    let mindate = year+'-'+month+'-'+day
+  
     useEffect(()=>{
         axios.post('/staffapi/leadinteraction/read',{lead_id:props.lead._id},{withCredentials:true})
         .then(result=>{
@@ -43,6 +58,26 @@ function Lead(props){
         })
     },[])
 
+    const updateReminder = (e)=>{
+        e.preventDefault()
+        axios.post('/staffapi/updatereminder',
+        {lead_id:props.lead._id,
+         rem_date:remdate.current.value},
+         {withCredentials:true})
+         .then(result=>{
+            switch(result.data.status){
+                    case 401:seterr2({exist:true,msg:'UNauthorised to close Lead'});break;
+                    case 423:seterr2({exist:true,msg:`validation error ${result.data.type}`});break;
+                    case 422:seterr2({exist:true,msg:"Can't close Lead which doesnot exist"});break;
+                    case 500:seterr2({exist:true,msg:'server error'});break;
+                    case 200:props.editLead(result.data.lead);break;
+                    default:console.log('default exec close lead')
+                }
+         }).catch(err=>{
+            seterr2({exist:true,msg:'server error'})
+         })
+    }
+
     const closeLead = ()=>{
         setprogress({on:true,bcode:'cl'})
         axios.post('staffapi/lead/closelead',{lead_id:props.lead._id},{withCredentials:true})
@@ -53,7 +88,7 @@ function Lead(props){
                     case 423:seterr({exist:true,msg:`validation error ${result.data.type}`});break;
                     case 422:seterr({exist:true,msg:"Can't close Lead which doesnot exist"});break;
                     case 500:seterr({exist:true,msg:'server error'});break;
-                    case 200:props.editLead(result.data.lead);break;
+                    case 200:props.editLead(result.data.lead);setReminderMode('unedit');break;
                     default:console.log('default exec close lead')
                 }
         })
@@ -61,6 +96,7 @@ function Lead(props){
                 setprogress({on:false,bcode:null})
         })
     }
+
 
     if(state.loading){
         return (
@@ -84,12 +120,34 @@ function Lead(props){
       }else{
         return (<>
             <div className='d-flex flex-wrap align-items-center justify-content-between my-2'>
-                <div>
-                    <IconButton color='inherit' size='small' onClick={()=>props.setOpenLead({open:false,lead_id:null})}>
+                <form onSubmit={updateReminder} className='d-flex align-items-center '>
+                    <IconButton color='inherit' size='small' type='button' onClick={()=>props.setOpenLead({open:false,lead_id:null})}>
                         <BackIcon/>
                     </IconButton>
-                    <label className='text-1 ff-mst ml-2'>Lead</label>
-                </div>
+                    <label  className='text-dark m-1 text-nowrap'>Next Call Scheduled Date</label>
+                    {(reminderMode !==  'edit')?<label  className='text-1 m-1'>{(props.lead.rem_date)?beautyfyDate(props.lead.rem_date):'--/--/---'}</label>:<></>}
+                    {(reminderMode !==  'edit')?
+                     <IconButton size='small' type='button' onClick={()=>setReminderMode('edit')} onFocus={()=>seterr2({exist:false,msg:''})}>
+                        <EditIcon />
+                    </IconButton>:<></>}
+                    {(reminderMode === 'edit')?
+                    <input type='date'
+                     min={mindate} 
+                     ref={remdate}
+                     onFocus={()=>seterr2({exist:false,msg:''})}
+                     className='form-control' required />:<></>}
+                    {(reminderMode === 'edit')?
+                    <>
+                    <IconButton size='small' type='submit' onFocus={()=>seterr2({exist:false,msg:''})}>
+                        <CheckIcon />
+                    </IconButton>
+                      <IconButton size='small' type='button' onClick={()=>setReminderMode('unedit')}>
+                        <CancelIcon />
+                    </IconButton>
+                    </>:<></>}
+                    {(err2.exist)?<Fade in={err.exist}><Alert severity='error' variant='filled' >{err2.msg}</Alert></Fade>:<></>}
+                </form>
+                
                 {(props.lead.status === 'A')?
                 <div className='d-flex flex-wrap'>
                     {(progress.on)?<CircularProgress/>:

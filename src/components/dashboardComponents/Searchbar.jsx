@@ -1,110 +1,117 @@
-import React,{useState,useRef} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React,{useState,useRef,useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-// import {setNotebooksArray,setNotebook} from '../../redux/notebooks/notebooks.actions'
-// import {setTodosArray,setTodoList} from '../../redux/todos/todos.action'
-// import {connect} from 'react-redux'
-// import axios  from 'axios'
+import {setCampaignsObject} from '../../redux/campaigns/campaigns.actions'
+import {setLeadsObject} from '../../redux/leads/leads.actions'
+import {connect} from 'react-redux'
+import axios  from 'axios'
 import Alert from '@material-ui/lab/Alert'
 import CircularProgress from '../utilComponents/CircularProgress'
+import SearchBarFilters from './searchbar/SearchBarFilters'
+import Fade from '@material-ui/core/Fade'
 
-const useStyles = makeStyles((theme) => ({
-  iconButton: {
-    padding: 10,
-  }
-}));
-
+let type = ''
+let c = 0
 function Searchbar(props) {
-  const classes = useStyles();
+
+
   const query = useRef('')
-  const [progress,setprogress] = useState(false)
-  const [error,seterror] = useState({exist:false,msg:''})
 
-  // const findUrl = ()=>{
-  //   switch(props.type){
-  //     case 'notebooks': return '/notesapi/searchnotebooks' 
-  //     case 'todos': return '/todosapi/searchtodos' 
-  //     case 'notes' : return '/notesapi/searchnotes'
-  //     case 'todolist' : return  '/todosapi/searchitems'
-  //     default : return '/todosapi/readtodo'
-  //   }
-  // }
+  const [searchFilters,setSearchFilters] = useState({applied:false,filters:{},sortby:{}}) 
+  const [state,setstate] = useState({progress:false,error:{exist:false,msg:''},clear:false})
+  
+  const makeFiltersChangeRequest = async (obj)=>{
+      await setSearchFilters(obj)
+      search()
+      c += 1
+      console.log(c)
+  }
 
-  // const generateResult = (data)=>{
-  //   switch(props.type){
-  //     case 'notebooks': props.setNotebooksArray(data.notebooks);break ;
-  //     case 'todos': props.setTodosArray(data.todos);break;
-  //     case 'notes': props.setNotebook(data.notebook);break;
-  //     case 'todolist': props.setTodoList(data.todolist);break;
-  //     default : return ''
-  //   }
-  // }
+  const generateRequestData = ()=>{
+    if(searchFilters.applied){
+      const queryObject = {
+              type:props.type,
+              searchQuery:query.current.value || '',
+              filters:searchFilters.filters,
+              sortby:searchFilters.sortby
+            }
+      return {url:'/staffapi/filteredsearch',query:queryObject}
+    }else{
+      const queryObject = {
+        type:props.type,
+        searchQuery:query.current.value || '',
+      }
+      return {url:'/staffapi/filteredsearch',query:queryObject}
+    }
+  }
 
-  // const checkLength = ()=>{
-  //   if(query.current.value.length%3 === 0 && query.current.value !== ''){
-  //     search()
-  //   }
-  // }
+  const generateResult = (data)=>{
+    switch(props.type){
+      case 'campaigns': props.setCampaignsObject(data.campaignsArray);break ;
+      case 'leads': props.setLeadsObject(data.leadsArray);break;
+      default : return ''
+    }
+    setstate({...state,clear:!state.clear})
+  }
 
-  // const search=()=>{
-  //   props.setsearch(true)
-  //   seterror({exist:false,msg:''})
-  //   setprogress(true)
-  //   axios.post(findUrl(),{
-  //         query:query.current.value || '',
-  //         notebook_id:props.notebook_id || '',
-  //         todo_id:props.todo_id || ''
-  //       },{withCredentials:true})
-  //       .then(result=>{
-  //         setTimeout(()=>{
-  //         setprogress(false)
-  //         let status =result.data.status
-  //         if(status === 500){
-  //           seterror({exist:true,msg:'server error'})
-  //         }else if(status === 401){
-  //           seterror({exist:true,msg:'Unauthorized access'})
-  //         }else if(status === 200){
-  //           generateResult(result.data)
-  //         }
-  //       },3000)
-  //       })
-  //       .catch(err=>{
-  //         setprogress(false)
-  //         seterror({exist:true,msg:'server error'})
-  //       })
-  // }
+  const checkLength = ()=>{
+    if(query.current.value.length%3 === 0 && query.current.value !== ''){
+      search()
+    }
+  }
+  
 
-  const [style,setStyle] = useState({})
+  const search=(cflag = null)=>{
+    setstate({...state,progress:(cflag === null)?true:false,error:{exist:false,msg:''}})
+    let data = (cflag === true)?{url:'/staffapi/filteredsearch',query:{type:props.type,searchQuery:''}}:generateRequestData()
+    axios.post(data.url,data.query,{withCredentials:true})
+        .then(result=>{
+          switch(result.data.status){
+              case 423:setstate({...state,progress:false,error:{exist:true,msg:`validation err ${result.data.type}`}});break;
+              case 500:setstate({...state,progress:false,error:{exist:true,msg:'server error'}});break;
+              case 401:setstate({...state,progress:false,error:{exist:true,msg:'Unauthorized'}});break;
+              case 200:generateResult(result.data);break;
+              default :console.log('default exec serach bar')
+          }
+        })
+        .catch(err=>{
+          setstate({...state,progress:false,clear:(cflag === true)?false:true,error:{exist:true,msg:'server error'}})
+        })
+  }
 
-  return (<>
-    <div className='bg-light d-flex justify-content-center align-items-center rounded' style={style}
-     onBlur={()=>setStyle({})}
-     onFocus={()=>setStyle({border:'2px solid #7400B8'})}>
-        <input className='form-control bg-light border-0' placeholder='Search' id='search' 
-        // onChange={checkLength}
-         ref={query} />
-        {(progress)?
-          <CircularProgress className='fm'/>:
-          <IconButton disabled={progress} className={classes.iconButton}  
-          //onClick={search} 
-          aria-label="search">
-            <SearchIcon />
-          </IconButton>
+
+  return (
+  <div className='col-12 fsm d-flex justify-content-between'>
+      <SearchBarFilters type={props.type}  makeFiltersChangeRequest={makeFiltersChangeRequest} flag={searchFilters.flag} />
+        <div className='bg-light col-lg-6 col-md-6 col-8 p-0 d-flex justify-content-center align-items-center rounded'>
+              <input className='bg-light form-control border-0'  placeholder={`Search ${props.type}`} id='search' 
+              onChange={checkLength}
+              ref={query} />
+              {(state.progress)?
+                <CircularProgress className='fsm'/>:
+                <IconButton disabled={state.progress} size='small'   
+                  onClick={search}>
+                  <SearchIcon fontSize='small'/>
+                </IconButton>
+              }
+        </div>
+        {(state.error.exist)?
+            <Fade in={state.error.exist}>
+              <Alert severity='error' className='fsm' variant='filled'>{state.error.msg}</Alert>
+            </Fade>:
+            <></>
         }
-    </div>
-    {(error.exist)?<div className='my-2'><Alert severity='error' variant='filled'>{error.msg}</Alert></div>:<></>}
-    </>
+        {
+          (state.clear)?<button className='btn btn-danger fsm' onClick={()=>search(true)} >clear results</button>:<></>
+        }
+   </div>
   );
 }
 
-// const mapDispatchToProps = dispatch =>({
-//   setNotebooksArray:array=>dispatch(setNotebooksArray(array)),
-//   setTodosArray:array=>dispatch(setTodosArray(array)),
-//   setNotebook:notebook=>dispatch(setNotebook(notebook)),
-//   setTodoList:todolist=>dispatch(setTodoList(todolist))
-// })
+const mapDispatchToProps = dispatch=>({
+  setCampaignsObject:array=>dispatch(setCampaignsObject(array)),
+  setLeadsObject:array=>dispatch(setLeadsObject(array))
+})
 
 
-//export default connect(null,mapDispatchToProps)(Searchbar)
-export default Searchbar
+export default connect(null,mapDispatchToProps)(Searchbar)

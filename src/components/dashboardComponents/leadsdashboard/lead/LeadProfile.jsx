@@ -32,7 +32,7 @@ function LeadProfile (props){
                         <div className='text-dark fmd'>Interested In</div>
                         <div className='d-flex flex-wrap'>
                             {
-                             props.lead.interested_in.map((product_id)=><label key={product_id} className='text-1 m-1 ff-mst'>{props.productsObject[product_id].name}</label>)
+                             props.lead.interested_in.map((product_id)=><label key={product_id} className='text-1 m-1 ff-mst'>{(props.productsObject[product_id] === undefined)?'':props.productsObject[product_id].name}</label>)
                             }
                         </div>
                     </div>

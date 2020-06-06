@@ -1,7 +1,6 @@
 import React,{useRef,useState} from 'react'
 import {connect} from 'react-redux'
 import PhoneInput from 'react-phone-input-2'
-import {isPhone} from '../../../utils/validations/index'
 import 'react-phone-input-2/lib/material.css'
 import IconButton from '@material-ui/core/IconButton'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -9,6 +8,7 @@ import axios  from 'axios'
 import CircularProgress from '../../utilComponents/CircularProgress'
 import Alert from '@material-ui/lab/Alert'
 import MessageSnackbar from '../../utilComponents/MessageSnackbar'
+import {isEmail,isPhone,checkName} from '../../../utils/validations/index'
 
 function LeadForm (props){
 
@@ -43,6 +43,27 @@ function LeadForm (props){
         setProducts({sel:{...selobj},rem:{...remobj}})
     }
 
+    const validate = data=>{
+        const {lead_name,email,dob,location,interested_in,campaign_id} = data
+        if(!lead_name || !checkName(lead_name)){
+            return {flag:false,msg:'Spaces Are not Allowed in Firstname'}
+        }else if(!email || !isEmail(email)){
+            return {flag:false,msg:'Invalid Email Address'}
+        }else if(!phone || !isPhone(phone)){
+            return {flag:false,msg:'Invalid Phone number'}
+        }else if(!interested_in || !Array.isArray(interested_in) || interested_in.length === 0){
+            return {flag:false,msg:'Atleast Select One product'}
+        }else if((new Date(dob)).getTime() > (new Date()).getTime()){
+            return  {flag:false,msg:'Invalid Date of Birth'}
+        }else if(!location){
+            return  {flag:false,msg:'Invalid Location'}
+        }else if(campaign_id === null){
+            return  {flag:false,msg:'Select A Campaign, or  if there is no Active camapign then create One'}
+        }else{
+            return {flag:true}
+        }
+    }
+
     const submitForm = (e)=>{
         e.preventDefault()
         setprogress(true)
@@ -60,20 +81,25 @@ function LeadForm (props){
             campaign_id,
             phone:phoneNumber
         }
-        axios.post('/staffapi/lead/createone',dataObj,{withCredentials:true})
-        .then(result=>{
-            setprogress(false)
-            switch(result.data.status){
-                case 200:setsuccess(true);break;
-                case 423:seterr({exist:true,msg:`validation_error ${result.data.type}`});break;
-                case 500:seterr({exist:true,msg:'server_error'});break;
-                default:console.log('default exec lead form')
-            }
-        })
-        .catch(err=>{
-            setprogress(false)
-            seterr({exist:true,msg:'server_error'})
-        })
+        let result = validate(dataObj)
+        if(result.flag){
+            axios.post('/staffapi/lead/createone',dataObj,{withCredentials:true})
+            .then(result=>{
+                setprogress(false)
+                switch(result.data.status){
+                    case 200:setsuccess(true);break;
+                    case 423:seterr({exist:true,msg:`validation_error ${result.data.type}`});break;
+                    case 500:seterr({exist:true,msg:'server_error'});break;
+                    default:console.log('default exec lead form')
+                }
+            })
+            .catch(err=>{
+                setprogress(false)
+                seterr({exist:true,msg:'server_error'})
+            })}
+        else{
+            seterr({exist:true,msg:result.msg})
+        }
     }
 
 
@@ -125,7 +151,7 @@ function LeadForm (props){
                 </div>
                 <div className='form-group'>
                     <label>Location</label>
-                    <input className='form-control' onFocus={()=>seterr({exist:false,msg:''})} ref={loc} required type='text' id='loc'/>
+                    <input className='form-control' onFocus={()=>seterr({exist:false,msg:''})} ref={loc} minLength={1} maxLength={50} required type='text' id='loc'/>
                 </div>
                 {/* selected products */}
                 <div className='d-flex col-12 p-0 flex-wrap my-2'>

@@ -218,7 +218,13 @@ text-align: center;
     overflow-y: scroll;
     height: '80vh';
 }
+.searchbar-filters{
+    position:absolute;
+    top:100%;
+    left:0;
+    z-index:5;
 
+}
 @media only screen and (max-width:768px){
     /* .sidebar{
         width:15%;
