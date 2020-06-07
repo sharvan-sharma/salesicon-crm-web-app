@@ -7,7 +7,7 @@ import LandingPage from './containers/LandingPage'
 import Authenticate from './containers/Authenticate'
 import Verify from './containers/Verify'
 import ResetPassword from './containers/ResetPassword'
-import Dashboard from './containers/Dashboard'
+import DashboardRouter from './containers/DashboardRouter'
 import Contact from './containers/Contact'
 import About from './containers/About'
 import {Route,Switch,Redirect} from 'react-router-dom'
@@ -50,7 +50,7 @@ function App(props) {
   } else {
     if (props.logged_in) {
       return (<Switch>
-                <Route path='/' component={Dashboard} />
+                <Route path='/' component={DashboardRouter} />
                 <Route >
                   <Redirect to='/' />
                 </Route>
