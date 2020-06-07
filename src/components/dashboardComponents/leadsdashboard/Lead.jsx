@@ -22,7 +22,7 @@ import CircularProgress from '../../utilComponents/CircularProgress'
 
 const beautyfyDate = (date)=>{
     let dummydate = new Date(date)
-    return dummydate.getDate()+'/'+dummydate.getMonth()+'/'+dummydate.getFullYear()
+    return dummydate.getDate()+'/'+(dummydate.getMonth()+1)+'/'+dummydate.getFullYear()
 }
 
 
@@ -70,7 +70,7 @@ function Lead(props){
                     case 423:seterr2({exist:true,msg:`validation error ${result.data.type}`});break;
                     case 422:seterr2({exist:true,msg:"Can't close Lead which doesnot exist"});break;
                     case 500:seterr2({exist:true,msg:'server error'});break;
-                    case 200:props.editLead(result.data.lead);break;
+                    case 200:props.editLead(result.data.lead);setReminderMode('unedit');break;
                     default:console.log('default exec close lead')
                 }
          }).catch(err=>{
@@ -88,7 +88,7 @@ function Lead(props){
                     case 423:seterr({exist:true,msg:`validation error ${result.data.type}`});break;
                     case 422:seterr({exist:true,msg:"Can't close Lead which doesnot exist"});break;
                     case 500:seterr({exist:true,msg:'server error'});break;
-                    case 200:props.editLead(result.data.lead);setReminderMode('unedit');break;
+                    case 200:props.editLead(result.data.lead);break;
                     default:console.log('default exec close lead')
                 }
         })
@@ -96,8 +96,6 @@ function Lead(props){
                 setprogress({on:false,bcode:null})
         })
     }
-
-
     if(state.loading){
         return (
             <div className='col-12 d-flex  justify-content-center align-items-center ' style={{height:'80vh'}}>
@@ -125,7 +123,7 @@ function Lead(props){
                         <BackIcon/>
                     </IconButton>
                     <label  className='text-dark m-1 text-nowrap'>Next Call Scheduled Date</label>
-                    {(reminderMode !==  'edit')?<label  className='text-1 m-1'>{(props.lead.rem_date)?beautyfyDate(props.lead.rem_date):'--/--/---'}</label>:<></>}
+                    {(reminderMode !==  'edit')?<label  className='text-1 m-1'>{(props.leadsObject[props.lead._id].rem_date)?beautyfyDate(props.leadsObject[props.lead._id].rem_date):'--/--/---'}</label>:<></>}
                     {(reminderMode !==  'edit')?
                      <IconButton size='small' type='button' onClick={()=>setReminderMode('edit')} onFocus={()=>seterr2({exist:false,msg:''})}>
                         <EditIcon />
@@ -193,7 +191,8 @@ const mapDispatchToProps = dispatch=>({
 })
 
 const mapStateToProps = state=>({
-    leadInteractionsObject:state.leadInteractions.leadInteractionsObject
+    leadInteractionsObject:state.leadInteractions.leadInteractionsObject,
+    leadsObject:state.leads.leadsObject
 })
 
 
