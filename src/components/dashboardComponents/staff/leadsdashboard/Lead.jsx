@@ -8,16 +8,16 @@ import AddIcon from '@material-ui/icons/Add'
 import CancelIcon from '@material-ui/icons/Cancel'
 import Fade from '@material-ui/core/Fade'
 import axios from 'axios'
-import Brand from '../../utilComponents/Brand'
-import LinearProgress from '../../utilComponents/LinearProgress'
+import Brand from '../../../utilComponents/Brand'
+import LinearProgress from '../../../utilComponents/LinearProgress'
 import Alert from '@material-ui/lab/Alert'
 import {connect} from 'react-redux'
-import {setLeadInteractionsObject} from '../../../redux/leadInteractions/leadInteractions.actions'
-import {editLead} from '../../../redux/leads/leads.actions'
+import {setLeadInteractionsObject} from '../../../../redux/leadInteractions/leadInteractions.actions'
+import {editLead} from '../../../../redux/leads/leads.actions'
 import LeadProfile from './lead/LeadProfile'
 import LeadInteraction from './lead/LeadInteraction'
 import CreateLeadInteraction from './lead/CreateLeadInteraction'
-import CircularProgress from '../../utilComponents/CircularProgress'
+import LeadStatus  from './lead/LeadStatus'
 
 
 const beautyfyDate = (date)=>{
@@ -78,24 +78,7 @@ function Lead(props){
          })
     }
 
-    const closeLead = ()=>{
-        setprogress({on:true,bcode:'cl'})
-        axios.post('staffapi/lead/closelead',{lead_id:props.lead._id},{withCredentials:true})
-        .then(result=>{
-                setprogress({on:false,bcode:null})
-                switch(result.data.status){
-                    case 401:seterr({exist:true,msg:'UNauthorised to close Lead'});break;
-                    case 423:seterr({exist:true,msg:`validation error ${result.data.type}`});break;
-                    case 422:seterr({exist:true,msg:"Can't close Lead which doesnot exist"});break;
-                    case 500:seterr({exist:true,msg:'server error'});break;
-                    case 200:props.editLead(result.data.lead);break;
-                    default:console.log('default exec close lead')
-                }
-        })
-        .catch(err=>{
-                setprogress({on:false,bcode:null})
-        })
-    }
+    
     if(state.loading){
         return (
             <div className='col-12 d-flex  justify-content-center align-items-center ' style={{height:'80vh'}}>
@@ -145,15 +128,8 @@ function Lead(props){
                     </>:<></>}
                     {(err2.exist)?<Fade in={err.exist}><Alert severity='error' variant='filled' >{err2.msg}</Alert></Fade>:<></>}
                 </form>
+                <LeadStatus lead_id={props.lead._id} status={props.lead.status} />
                 
-                {(props.lead.status === 'A')?
-                <div className='d-flex flex-wrap'>
-                    {(progress.on)?<CircularProgress/>:
-                    <button className='btn fsm btn-danger mr-2' onClick={closeLead}>Close Lead</button>}
-                    {(err.exist)?<Fade in={err.exist}><Alert severity='error' variant='filled' >{err.msg}</Alert></Fade>:<></>}
-                </div>:
-                <label className='text-danger m-1 ff-mst'>Lead Closed</label>
-                }
             </div>
             <div className='hr-3'></div>
             <div className='d-flex flex-wrap'>

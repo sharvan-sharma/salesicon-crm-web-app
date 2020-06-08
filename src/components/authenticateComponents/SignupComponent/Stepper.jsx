@@ -22,32 +22,51 @@ import Message from './Message'
 //   },
 // }));
 
-function getSteps() {
-  return ['Enter a Valid Email', 'Enter Your Name','Enter a Valid Phone Number','Create a Strong Password'];
-}
-
-function getStepContent(stepIndex,back,next,steps,reset,data,setdata) {
-  switch (stepIndex) {
-    case 0:
-      return <EmailForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps}/>;
-    case 1:
-      return <NameForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps}/>;
-    case 2:
-      return <PhoneForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} />;
-    case 3:
-      return <PasswordForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} reset={reset} />;
-    case 4:
-        return <Message data={data} />
-    default:
-      return 'Unknown stepIndex';
+function getSteps(type) {
+  if(type === 'staff'){
+    return ['Enter Your Name','Enter a Valid Phone Number','Create a Strong Password'];
+  }else{
+    return ['Enter a Valid Email', 'Enter Your Name','Enter a Valid Phone Number','Create a Strong Password'];
   }
 }
 
-function SignupStepper(){
+function getStepContent(stepIndex,back,next,steps,reset,data,setdata,type) {
+  if(type === 'staff'){
+     switch (stepIndex) {
+        case 0:
+          return <NameForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps}/>;
+        case 1:
+          return <PhoneForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} />;
+        case 2:
+          return <PasswordForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} reset={reset} />;
+        case 3:
+            return <Message data={data} />
+        default:
+          return 'Unknown stepIndex';
+      }
+  }else{
+     switch (stepIndex) {
+        case 0:
+          return <EmailForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps}/>;
+        case 1:
+          return <NameForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps}/>;
+        case 2:
+          return <PhoneForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} />;
+        case 3:
+          return <PasswordForm stepIndex={stepIndex} data={data} setdata={setdata} back={back} next={next} steps={steps} reset={reset} />;
+        case 4:
+            return <Message data={data} />
+        default:
+          return 'Unknown stepIndex';
+      }
+  }
+}
+
+function SignupStepper(props){
   //const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
-  const [data,setdata] = React.useState({})
+  const steps = getSteps(props.type);
+  const [data,setdata] = React.useState({type:props.type})
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -72,7 +91,7 @@ function SignupStepper(){
         ))}
       </Stepper>
       <div>
-          {getStepContent(activeStep,handleBack,handleNext,steps,handleReset,data,setdata)}
+          {getStepContent(activeStep,handleBack,handleNext,steps,handleReset,data,setdata,props.type)}
       </div>
     </>
   );

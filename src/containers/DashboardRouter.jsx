@@ -20,10 +20,9 @@ const DashboardRouter = (props)=>{
             <Route exact path='/profile' component={()=><DashboardStructure screen={-1}/>} />
             <Route exact path='/' component={()=><DashboardStructure screen={0}/> } />
             <Route exact path='/conversions' component={()=><DashboardStructure screen={1}/>} />
-            <Route exact path='/pendingconv' component={()=><DashboardStructure screen={2}/>} />
-            <Route exact path='/rejectedconv' component={()=><DashboardStructure screen={3}/>} />
-            <Route exact path='/topsalesicons' component={()=><DashboardStructure screen={4}/>} />
-            <Route exact path='/leastsalesicon' component={()=><DashboardStructure screen={5}/>} />
+            <Route exact path='/sellers' component={()=><DashboardStructure screen={2}/>} />
+            <Route exact path='/staff' component={()=><DashboardStructure screen={3}/>} />
+            <Route exact path='/products' component={()=><DashboardStructure screen={4}/>} />
         </Switch>
       )
   }

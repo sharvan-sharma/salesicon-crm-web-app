@@ -22,9 +22,11 @@ function LoginForm(props){
     const submitForm = (e)=>{
         e.preventDefault()
         setprogress(true)
-        axios.post('/staffapi/login',{
+        console.log('submit form exec')
+        axios.post('/login',{
             email:email.current.value,
-            password:password.current.value
+            password:password.current.value,
+            type:props.type
         },{withCredentials:true})
         .then(result=>{
             setprogress(false)
@@ -57,9 +59,14 @@ function LoginForm(props){
                             <Link to='/' className='mr-2 text-3 text-decoration-none' >
                                 <FontAwesomeIcon icon={faChevronLeft}/>
                             </Link> 
+                            {(props.type === 'staff')?
+                            <span>
+                                Staff Login
+                            </span>:
                             <span >
                                 Already Have an Account?
                             </span>
+                            }
                     </label>
                     {(progress)?<div className='mb-2'><LinearProgress/></div>:<></>}
                     {(err.exist === 1)?
@@ -93,7 +100,7 @@ function LoginForm(props){
                         />
                     </div>
                     <div className = 'form-group d-flex justify-content-between mb-3 '>
-                        <Link to='/forgotpassword' className='btn btn-link fsm p-0'>Forgot Password ?</Link>
+                        <Link to={'/forgotpassword'+((props.type === 'admin')?'/admin':'/staff')} className='btn btn-link fsm p-0'>Forgot Password ?</Link>
                         <button className='btn btn-3' type='submit' disabled={progress}>Sign in</button>
                     </div>
                      {/* <p className='text-center my-2'>------------<span className='text-muted fm'> or </span>--------------</p>
@@ -102,7 +109,12 @@ function LoginForm(props){
                            Login Using  <span><b>C</b></span>ry<span><b>P</b></span>t<span className='fm'>Oauth2.0</span></a>
                     </div> */}
                     <div className='mt-5 fsm text-nowrap ff-mst d-flex justify-content-center'>
-                        <span>Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link></span>
+                        {(props.type === 'admin')?
+                            <span>Don't have an Account?
+                                <Link to='/signup/admin' className='text-decoration-none'>Signup here</Link>
+                            </span>
+                            :<></>
+                        }
                     </div>
                 </form>
             </Fade>)

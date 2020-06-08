@@ -39,6 +39,15 @@
     height: 100vh;
 }
 
+.error-sheild{
+position:fixed;
+top:0;
+bottom:0;
+width:100vw;
+height:100vh;
+z-index:30
+}
+
 .shield{
     background-color: rgba(0, 0, 0, 0.603);
     z-index: 1200;
@@ -223,8 +232,8 @@ text-align: center;
     top:100%;
     left:0;
     z-index:5;
-
 }
+
 @media only screen and (max-width:768px){
     /* .sidebar{
         width:15%;

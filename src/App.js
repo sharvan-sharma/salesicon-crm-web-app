@@ -20,6 +20,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './styles/main.css'
 
+const typesArray = ['admin','staff']
+
 function App(props) {
 
    const [screen,resetScreen] = useState({loading:true,error:false})
@@ -58,14 +60,42 @@ function App(props) {
     } else {
       return (<Switch>
                   <Route exact path='/' component={LandingPage} />
-                  <Route exact path='/login' component={()=><Authenticate page={1} />} />
-                  <Route exact path='/signup' component={()=><Authenticate page={2} />}/>
-                  <Route exact path='/forgotpassword' component={()=><Authenticate page={3} />} />
+                  <Route path='/login/:type' component={(prop)=>{
+                    const type = prop.match.params.type
+                    if(typesArray.includes(type)){
+                      return <Authenticate page={1} type={type} />
+                    }else{
+                      return <Page404/>
+                    }
+                  }} />
+                  <Route path='/signup/:type'  component={(prop)=>{
+                    const type = prop.match.params.type
+                    if(typesArray.includes(type)){
+                      if(type  === 'staff'){
+                        const val = querystring.parse(prop.location.search)
+                        const token = val.token
+                        return <Authenticate page={2} type={type} token={token} />
+                      }else{
+                        return <Authenticate page={2} type={type}/>
+                      }
+                    }else{
+                      return <Page404/>
+                    }
+                  }}/>
+                  <Route path='/forgotpassword/:type'  component={(prop)=>{
+                    const type = prop.match.params.type
+                    if(typesArray.includes(type)){
+                      return <Authenticate page={3} type={type} />
+                    }else{
+                      return <Page404/>
+                    }
+                  }} />
                   <Route exact path='/resetpassword' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
-                        return <ResetPassword token = {token} />
-                      }}/>/>
+                        const type = val.type
+                        return <ResetPassword token = {token} type={type} />
+                      }}/>
                   <Route path='/verifyemail' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token

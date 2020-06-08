@@ -11,7 +11,7 @@ function ResetPassword(props){
     const [data,setdata] = useState({email:null})
     
     useEffect(()=>{
-         axios.post('/staffapi/resetpassword',{token:props.token},{withCredentials:true})
+         axios.post('/resetpassword',{token:props.token},{withCredentials:true})
         .then(result=>{
             switch(result.data.status){
                 case 200 :  setdata({email:result.data.email});setstate({...state,loading:false});break;
@@ -37,11 +37,11 @@ function ResetPassword(props){
                     <div className='form-group'>
                         <Alert severity='error' variant='filled'>{state.msg}</Alert>
                     </div>
-                    {(state.link)?<Link to = '/forgotpassword' className='btn btn-warning'>Regenerate Link</Link>:<></>}
+                    {(state.link)?<Link to = {'/forgotpassword'+((props.type === 'admin')?'/admin':'')} className='btn btn-warning'>Regenerate Link</Link>:<></>}
             </div>
         )
     }else{
-        return <Authenticate  page={4} email = {data.email} />
+        return <Authenticate  page={4} email = {data.email} type={props.type} />
     }
 }
 

@@ -1,21 +1,29 @@
 import React,{useState,useEffect} from 'react'
-import SearchBar from '../Searchbar'
+import SearchBar from '../../Searchbar'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {setLeadsObject,closeLead} from '../../../redux/leads/leads.actions'
+import {setLeadsObject,closeLead} from '../../../../redux/leads/leads.actions'
 import Fade from '@material-ui/core/Fade'
 import Alert from '@material-ui/lab/Alert'
-import LinearProgress from '../../utilComponents/LinearProgress'
-import Brand from '../../utilComponents/Brand'
-import CircularProgress from '../../utilComponents/CircularProgress'
+import LinearProgress from '../../../utilComponents/LinearProgress'
+import Brand from '../../../utilComponents/Brand'
 
 const LeadGrid = (props)=>{
+
+    const getStyleClass = (type)=>{
+        switch(type){
+            case 'Rejected' : return 'text-danger '
+            case 'Converted' : return 'text-success '
+            default : return 'text-1 '
+        }
+    }
+
     return (
                     <div className='d-flex shadow p-2 my-4 rounded flex-wrap align-items-center justify-content-between'>
                         <div className='ff-mst bold '>{props.lead.name.firstname}</div>
                         <div className='ff-mst bold '>{props.lead.email}</div>
                         <div className='text-1 ff-mst '>{props.lead.phone}</div>
-                        <div className='ff-mst '>{(props.lead.status === 'A')?<span className='text-1'>Active</span>:<span className='text-danger'>Lead Closed</span>}</div>
+                        <div className='ff-mst '><span className={getStyleClass(props.lead.status)}>{props.lead.status}</span></div>
                         <button className='btn btn-3' onClick={()=>props.setOpenLead({open:true,lead:props.lead})}>Open</button>
                     </div>
     )

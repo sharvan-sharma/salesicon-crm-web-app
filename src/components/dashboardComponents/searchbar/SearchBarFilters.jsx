@@ -19,7 +19,7 @@ let menu = {
           ]
   },
   leads:{
-    filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]},
+    filters:[{code:'status',valuesArray:[{text:'Rejected',val:'Rejected'},{text:'Converted',val:'Converted'},{text:'Pending',val:'Pending'}]},
              {code:'source',valuesArray:[{text:'Online Source',val:'online'},{text:'Offline Source',val:'offline'}]}
             ],
     sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},

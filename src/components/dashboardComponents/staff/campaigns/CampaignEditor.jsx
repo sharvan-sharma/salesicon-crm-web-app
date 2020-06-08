@@ -2,10 +2,10 @@ import React,{useState,useRef} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Alert from '@material-ui/lab/Alert'
 import {connect} from 'react-redux'
-import {addCampaign,editCampaign} from '../../../redux/campaigns/campaigns.actions'
+import {addCampaign,editCampaign} from '../../../../redux/campaigns/campaigns.actions'
 import Fade from '@material-ui/core/Fade'
 import axios from 'axios'
-import CircularProgress from '../../utilComponents/CircularProgress'
+import CircularProgress from '../../../utilComponents/CircularProgress'
 
 function CampaignEditor(props){
 

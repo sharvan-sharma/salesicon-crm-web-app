@@ -13,10 +13,9 @@ function PasswordChangeComponent(props){
     const [progress,setprogress] = useState(false)
 
     const setdata = (obj)=>{
-        console.log(obj)
         setprogress(true)
         seterr({exist:0,msg:''})
-        axios.post('/staffapi/changepassword',obj,{withCredentials:true})
+        axios.post('/changepassword',obj,{withCredentials:true})
         .then(result=>{
             setprogress(false)
             switch(result.data.status){
@@ -43,11 +42,11 @@ function PasswordChangeComponent(props){
                             <LinearProgress/>
                         </div>:
                         <div className='my-3'>
-                            <PasswordForm data={{email:props.email}} setdata={setdata} />
+                            <PasswordForm data={{email:props.email,type:props.type}} setdata={setdata} />
                         </div>
                         }   
                         <div className='mt-5 mb-2 d-flex justify-content-center'>
-                            Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link>
+                            Don't have an Account?<Link to={'/signup'+((props.type === 'admin')?'/admin':'/staff')} className='text-decoration-none'>Signup here</Link>
                         </div>
                         </div>
                     </Fade>

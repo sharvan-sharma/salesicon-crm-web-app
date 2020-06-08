@@ -15,8 +15,10 @@ const linksObject = {
                       {text:'Campaigns',to:'/campaigns',content:0},
                       {text:'Add Leads',to:'/addleads',content:0}],
     admin:[  {text:'Dashboard',to:'/',content:0},
-                      {text:'Campaigns',to:'/campaigns',content:0},
-                      {text:'Add Leads',to:'/addleads',content:0}]
+                     {text:'Conversions',to:'/conversions',content:0},
+                     {text:'Sellers',to:'/sellers',content:0},
+                     {text:'Staff',to:'/staff',content:0},
+                     {text:'Products',to:'/products',content:0}]
 }
 
 function SideDrawer(props){

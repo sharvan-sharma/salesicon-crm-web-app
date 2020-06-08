@@ -56,6 +56,9 @@ return (    <Fade in={true} >
                     </Alert>
                     </div>
                     :<>
+                    <label className='my-2 p-0 ff-mst text-nowrap  col-12 text-center'>
+                        <span className='text-3'>{(props.type === 'staff')?'Staff':'Admin'}</span> Account
+                    </label>
                     <label className='my-2 p-0 ff-mst text-nowrap col-12 text-center'>Enter Your Registered Email</label>
                     <label className='text-muted col-12 text-center fsm ff-mst'>Password Reset Link will be sent to Registered Email</label>
                     {(progress)?<div className='mb-3'><LinearProgress/></div>:<></>}
@@ -72,12 +75,17 @@ return (    <Fade in={true} >
                             />
                     </div>
                     <div className = 'form-group d-flex justify-content-between mb-5 pb-5'>
-                        <Link to='/login' className='btn btn-outline-3'>Cancel</Link>
+                        <Link to={'/login'+((props.type === 'admin')?'/admin':'/staff')} className='btn btn-outline-3'>Cancel</Link>
                         <button className='btn btn-3 ' type='submit' disabled={progress}>Send</button>
                     </div>
                       </>}
                     <div className='mt-5 fsm text-nowrap ff-mst d-flex justify-content-center'>
-                        <span>Don't have an Account?<Link to='/signup' className='text-decoration-none'>Signup here</Link></span>
+                        {(props.type === 'admin')?
+                            <span>Don't have an Account?
+                                <Link to='/signup/admin' className='text-decoration-none'>Signup here</Link>
+                            </span>
+                            :<></>
+                        }
                     </div>
                 </form>
             </Fade>)

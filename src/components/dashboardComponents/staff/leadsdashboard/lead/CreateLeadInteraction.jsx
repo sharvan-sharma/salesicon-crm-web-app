@@ -6,8 +6,8 @@ import Fade from '@material-ui/core/Fade'
 import TextField from '@material-ui/core/TextField'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {addLeadInteraction} from '../../../../redux/leadInteractions/leadInteractions.actions'
-import CircularProgress  from '../../../utilComponents/CircularProgress'
+import {addLeadInteraction} from '../../../../../redux/leadInteractions/leadInteractions.actions'
+import CircularProgress  from '../../../../utilComponents/CircularProgress'
 import Alert from '@material-ui/lab/Alert'
 
 function CreateLeadInteraction(props){

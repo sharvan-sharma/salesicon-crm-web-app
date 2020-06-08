@@ -2,21 +2,33 @@ import React,{useEffect,useState} from 'react'
 import Alert from '@material-ui/lab/Alert'
 import LinearProgress from '../../utilComponents/LinearProgress'
 import axios from 'axios'
+import history from '../../../history'
 
 function Message (props) {
 
     const  [upload,setupload] = useState({flag:true,error:false,msg:''})
 
+    const Url = ()=>{
+        switch(props.data.type){
+            case 'staff': return '/staffapi/register'
+            case 'admin': return '/adminapi/register'
+            default : return '/adminapi/register'
+        }
+    }
+
     useEffect(()=>{
-      axios.post('/staffapi/register',{
+      axios.post(Url(),{
           ...props.data
       },{
           withCredentials:true
       }).then(result=>{
         let status = result.data.status
-
         if(status === 200){
-            setupload({...upload,flag:false})
+            if(props.type === 'staff'){
+                history.push('/')
+            }else{
+                setupload({...upload,flag:false})
+            }
         }else if(status === 401){
             setupload({...upload,flag:false,error:true,msg:'User Already Exists'})
         }else if(status === 423){

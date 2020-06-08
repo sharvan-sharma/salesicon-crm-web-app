@@ -67,7 +67,7 @@ return (
                         />
             </div>
             <div className='d-flex justify-content-between'>
-              <button className='btn btn-outline-3' disabled={props.stepIndex === 0} onClick={props.back}>
+              <button className='btn btn-outline-3' disabled={props.stepIndex === 0  } onClick={props.back}>
                 Back
               </button>
               <button variant="contained" color="primary" className='btn btn-3' disabled={err.exist} type='submit'>

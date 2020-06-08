@@ -1,10 +1,10 @@
 import React,{useEffect,useState} from 'react'
-import FileUpload from '../utilComponents/FileUpload'
+import FileUpload from '../../utilComponents/FileUpload'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert'
-import CircularProgress from '../utilComponents/CircularProgress'
-import MessageSnackbar from '../utilComponents/MessageSnackbar'
+import CircularProgress from '../../utilComponents/CircularProgress'
+import MessageSnackbar from '../../utilComponents/MessageSnackbar'
 import LeadForm from './createleads/LeadForm'
 
 function CreateLeads(props){

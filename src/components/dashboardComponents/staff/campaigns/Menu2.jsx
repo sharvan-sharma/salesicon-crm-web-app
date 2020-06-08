@@ -7,11 +7,11 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '../../utilComponents/CircularProgress'
+import CircularProgress from '../../../utilComponents/CircularProgress'
 import Alert from '@material-ui/lab/Alert'
 import axios from 'axios'
 import {connect} from 'react-redux'
-import {editCampaign} from '../../../redux/campaigns/campaigns.actions'
+import {editCampaign} from '../../../../redux/campaigns/campaigns.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {

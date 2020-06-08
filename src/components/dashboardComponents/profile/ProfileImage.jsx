@@ -27,7 +27,7 @@ function ProfileImage(props){
             setprogress(true)
             let formdata = new FormData()
             formdata.append('file',File)
-            axios.post('/staffapi/changestaffprofilephoto',formdata,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}})
+            axios.post('/changeprofilephoto',formdata,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}})
             .then(result=>{
                  setprogress(false)
                  switch(result.data.status){
