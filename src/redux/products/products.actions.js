@@ -1,8 +1,24 @@
 import productsActionTypes from './products.types'
 
 const setProductsObject = array=>({
-    action:productsActionTypes.SET_PRODUCTS_OBJECT,
+    type:productsActionTypes.SET_PRODUCTS_OBJECT,
     payload:array
 })
 
-export default {setProductsObject}
+const addProduct = (product)=>({
+       type:productsActionTypes.ADD_PRODUCT,
+       payload:product
+})
+
+const editProduct = (product)=>({
+       type:productsActionTypes.EDIT_PRODUCT,
+       payload:product
+})
+
+const deleteProduct = (id)=>({
+       type:productsActionTypes.DELETE_PRODUCT,
+       payload:id
+})
+
+
+export {setProductsObject,addProduct,editProduct,deleteProduct}

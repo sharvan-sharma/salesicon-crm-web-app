@@ -10,7 +10,7 @@ import LeadForm from './createleads/LeadForm'
 function CreateLeads(props){
 
     const [active,setActive] = useState(1)
-    const [file,setFile] = useState(null)
+    const [file,setFile] = useState(null) 
     const [fileError,setFileError] = useState(false)
     const [err,seterr]= useState({exist:false,msg:''})
     const [progress,setprogress] = useState(false)
