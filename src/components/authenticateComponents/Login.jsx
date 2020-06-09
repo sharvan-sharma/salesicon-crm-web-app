@@ -22,7 +22,6 @@ function LoginForm(props){
     const submitForm = (e)=>{
         e.preventDefault()
         setprogress(true)
-        console.log('submit form exec')
         axios.post('/login',{
             email:email.current.value,
             password:password.current.value,

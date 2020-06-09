@@ -48,11 +48,11 @@ function VerifyEmail(props){
                 <p className='h4'>Your Account is Successfully {(props.type === 'verified')?'Verified':'Approved'} </p>
                 {(props.type === 'verified')?
                     <>
-                        <p>Now, Your account is under approval by your Admin. 
+                        <p>Now, Your account is under approval . 
                            <br/> We will Notify you when your Account is Approved.</p>
                     </>:
                     <>
-                        <p>Now, You can <Link to = '/login' className='btn btn-outline-3'>Signin</Link></p>
+                        <p>Now, You can <Link to = '/login/admin' className='btn btn-outline-3'>Signin</Link></p>
                     </>
                 }
             </Alert>
@@ -61,9 +61,9 @@ function VerifyEmail(props){
     
     const relUrl = ()=>{
         switch(props.type){
-            case 'verified' : return '/staffapi/verifyemail'
-            case 'approved' : return '/staffapi/verifyapproval'
-            default : return '/staffapi/verifyemail'
+            case 'verified' : return '/adminapi/verifyemail'
+            case 'approved' : return '/adminapi/verifyapproval'
+            default : return '/adminapi/verifyemail'
         }
     }
 

@@ -138,10 +138,10 @@ function Lead(props){
                 <div className='col-12 col-md-8 col-lg-8 col-xl-8 my-4  '  >
                     <div className='d-flex justify-content-between align-items-center'>
                             <label className='flg ff-mst my-2'><span className='text-1'>Lead </span>Interactions</label>
-                           {(props.lead.status === 'A' && !add)?<div><IconButton color='inherit' size='small' onClick={()=>setAdd(true)}><AddIcon/></IconButton></div>:<></>}
+                           {(props.lead.status === 'Pending' && !add)?<div><IconButton color='inherit' size='small' onClick={()=>setAdd(true)}><AddIcon/></IconButton></div>:<></>}
                     </div>
                     
-                    {(add && props.lead.status === 'A')?<CreateLeadInteraction setAdd={setAdd} lead_id={props.lead._id} />:<></>}
+                    {(add && props.lead.status === 'Pending')?<CreateLeadInteraction setAdd={setAdd} lead_id={props.lead._id} />:<></>}
                     
                     <div className='lead-interaction bg-light' style={{height:'60vh'}}>
                         {(Object.entries(props.leadInteractionsObject).length === 0)?

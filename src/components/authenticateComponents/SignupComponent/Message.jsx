@@ -24,7 +24,7 @@ function Message (props) {
       }).then(result=>{
         let status = result.data.status
         if(status === 200){
-            if(props.type === 'staff'){
+            if(props.data.type === 'staff'){
                 history.push('/')
             }else{
                 setupload({...upload,flag:false})

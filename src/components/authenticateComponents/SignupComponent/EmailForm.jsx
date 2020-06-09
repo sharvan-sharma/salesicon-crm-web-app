@@ -15,8 +15,9 @@ function EmailForm(props){
     const submitForm = (e)=>{
         e.preventDefault()
         setprogress(true)
-        axios.post('/staffapi/checkemail',{
-            email:email.current.value
+        axios.post('/checkemail',{
+            email:email.current.value,
+            type:props.data.type
         },{withCredentials:true})
         .then(result=>{
             setprogress(false)

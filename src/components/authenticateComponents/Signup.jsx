@@ -25,7 +25,7 @@ const Template = (props)=>{
                                 Don't Have an Account?
                             </span>}
                     </label>
-                    <Stepper type={props.type} email={props.email || ''} admin_id={props.admin_id || ''} />
+                    <Stepper type={props.type} token={props.token || ''} />
                     <div className='mt-5 mb-2 fsm text-nowrap ff-mst d-flex justify-content-center'>
                         {(props.type === 'admin')?
                             <span>Already have an Account?
@@ -77,7 +77,7 @@ function Signup(props){
         }else if(state.error){
             return (<Alert severity='error' variant='filled'>{state.msg}</Alert>)
         }else{
-            return <Template type={props.type} email={state.data.email} admin_id={state.data.admin_id} />
+            return <Template type={props.type} token={props.token} />
         }
     }
 }

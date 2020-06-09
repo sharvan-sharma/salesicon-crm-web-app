@@ -62,11 +62,12 @@ function getStepContent(stepIndex,back,next,steps,reset,data,setdata,type) {
   }
 }
 
+
 function SignupStepper(props){
   //const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps(props.type);
-  const [data,setdata] = React.useState({type:props.type})
+  const [data,setdata] = React.useState({type:props.type,token:props.token})
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
