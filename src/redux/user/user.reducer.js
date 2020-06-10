@@ -11,7 +11,8 @@ const INITIAL_STATE = {
     phone:null,
     photo:null,
     id:null,
-    account_type:null
+    account_type:null,
+    createdAt:null
 }
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -24,7 +25,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 email: action.payload.email,
                 phone:action.payload.phone,
                 photo:action.payload.photo,
-                account_type:action.payload.account_type
+                account_type:action.payload.account_type,
+                createdAt:action.payload.createdAt
             });
         case userActionTypes.SET_USER_PHOTO:
             return ({

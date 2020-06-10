@@ -44,7 +44,7 @@ function SingleStaff(){
                 <div className='my-2'>
                     <label className='m-1 flg ff-mst'>Enter Staff Email</label>
                 </div>
-                <div className='col-12 p-0 col-md-8 col-lg-4'>
+                <div className='col-12 p-0 col-md-10 col-lg-6'>
                      <TextField 
                      type='email'
                      id="outlined-basic" 

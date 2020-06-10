@@ -3,39 +3,24 @@ import Brand from '../../../utilComponents/Brand'
 import LinearProgress from '../../../utilComponents/LinearProgress'
 import Alert from '@material-ui/lab/Alert'
 import {connect} from 'react-redux'
-import {setStaffsObject} from '../../../../redux/staffs/staffs.actions'
+import {setCampaignsObject} from '../../../../redux/campaigns/campaigns.actions'
 import Fade from '@material-ui/core/Fade'
 import axios from 'axios'
-import Status from '../../../utilComponents/Status'
+import CampaignsGrid from  './CampaignsGrid'
 
 
-const StaffGrid = (props)=>{
-
-    const imagePath = (props.staff.photo === null)?'/avatar.jpg':'http://localhost:5000'+props.staff.photo
-
-    return (
-                    <div className='d-flex shadow p-2 my-4 rounded flex-wrap align-items-center justify-content-between'>
-                        <img src={imagePath} style={{width:'30px',height:'30px'}} alt={props.staff.name.firstname} />
-                        <div className='ff-mst bold '>{props.staff.name.firstname}</div>
-                        <Status type='staffs' status={props.staff.status} staff_id={props.staff._id} />
-                        <div className='ff-mst bold '>{props.staff.email}</div>
-                        <div className='text-1 ff-mst '>{props.staff.phone}</div>
-                    </div>
-    )
-}
-
-function StaffTable(props){
+function CampaignsTable(props){
 
     const [state,setstate] = useState({loading:true,error:false,msg:''})
 
     useEffect(()=>{
-        axios.get('/adminapi/staff/readall',{withCredentials:true})
+        axios.get('/adminapi/campaigns/readall',{withCredentials:true})
         .then(result=>{
             switch(result.data.status){
-                case 200: props.setStaffsObject(result.data.staffArray);setstate({...state,loading:false});break;
+                case 200: props.setCampaignsObject(result.data.campaignsArray);setstate({...state,loading:false});break;
                 case 401: setstate({...state,loading:false,error:true,msg:'Unauthorised'});break;
                 case 500: setstate({...state,loading:false,error:true,msg:'server error'});break;
-                default : console.log('staff loading default exec admin')
+                default : console.log('campaign loading default exec admin')
             }
         })
         .catch(err=>{
@@ -59,21 +44,21 @@ function StaffTable(props){
         return (
             <div className='col-12 d-flex  justify-content-center align-items-center' style={{height:'80vh'}}>
                 <div className='col-12 col-md-6 col-lg-6 d-flex flex-column justify-content-center align-items-center '>
-                    <Alert severity='error' variant='filled'>Error Occured while Loading Staff</Alert>
+                    <Alert severity='error' variant='filled'>Error Occured while Loading Campaigns</Alert>
                 </div>
             </div>
         )
     }else{
         return (<>
             <div className='col-12 my-4'>
-                 {
-                Object.entries(props.staffsObject).map((item)=><StaffGrid key={item[0]} staff={item[1]}/>)
+                {
+                    Object.entries(props.campaignsObject).map((item)=><CampaignsGrid key={item[0]} campaign={item[1]}/>)
                 }
                 {
-                (Object.entries(props.staffsObject).length === 0)?
+                (Object.entries(props.campaignsObject).length === 0)?
                 <Fade in={true}>
                     <Alert severity='info' variant='filled' className='shadow p-2 my-4 rounded'>
-                        No Staff Registered Yet 
+                        No Campaign Registered Yet 
                     </Alert>
                 </Fade>:
                 <></>
@@ -84,11 +69,11 @@ function StaffTable(props){
 
 
 const mapStateToProps = state=>({
-    staffsObject :state.staffs.staffsObject
+    campaignsObject:state.campaigns.campaignsObject
 })
 
-const mapDispatchToProps = dispatch =>({
-    setStaffsObject:array=>dispatch(setStaffsObject(array))
+const mapDispatchToProps = dispatch=>({
+    setCampaignsObject : array=>dispatch(setCampaignsObject(array))
 })
 
-export default  connect(mapStateToProps,mapDispatchToProps)(StaffTable)
+export default  connect(mapStateToProps,mapDispatchToProps)(CampaignsTable)

@@ -21,8 +21,8 @@ const DashboardRouter = (props)=>{
             <Route exact path='/' component={()=><DashboardStructure screen={0}/> } />
             <Route exact path='/conversions' component={()=><DashboardStructure screen={1}/>} />
             <Route exact path='/sellers' component={()=><DashboardStructure screen={2}/>} />
-            <Route path='/staff' component={()=><DashboardStructure screen={3}/>} />
-            <Route exact path='/products' component={()=><DashboardStructure screen={4}/>} />
+            <Route path='/addstaff' component={()=><DashboardStructure screen={3}/>} />
+            <Route exact path='/addproducts' component={()=><DashboardStructure screen={4}/>} />
         </Switch>
       )
   }
