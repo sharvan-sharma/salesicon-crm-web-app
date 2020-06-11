@@ -10,24 +10,23 @@ const fileType = {
     lengthErrorMessage:'select a file which is (.jpg, .png or .bmp) and size less than'
   },
   xls:{
-     type:['xls'],
+    type:['xls'],
     typeErrorMessage:'Only .xls files are acceptable',
     lengthErrorMessage:'select a file which is xls and size less than'
   }
 }
 
 export default function App(props) {
-  const [state, setstate] = useState({error:false,filename:'',exist:false,msg:''});
+
   const handleDrop = acceptedFiles =>{
     if(acceptedFiles.length === 1){
       if(fileType[props.fileType].type.includes(acceptedFiles[0].name.split('.').pop())){
-        setstate({...state,filename:acceptedFiles[0].name,exist:true})
-        props.setFile(acceptedFiles[0] || null);
+        props.setFile(acceptedFiles[0],{exist:false})
       }else{
-        setstate({...state,error:true,msg:fileType[props.fileType].typeErrorMessage})
+        props.setFile(null,{exist:true,msg:fileType[props.fileType].typeErrorMessage})
       }
     }else{
-      setstate({...state,error:true,msg:fileType[props.fileType].lengthErrorMessage+` ${props.maxSize/1000}kb`})
+      props.setFile(null,{exist:true,msg:fileType[props.fileType].lengthErrorMessage+` ${props.maxSize/1000}kb`})
     }
   }
 
@@ -54,17 +53,6 @@ export default function App(props) {
         }
       </Dropzone>
       <div>
-          {
-          (state.error)?
-            <Alert severity='error' variant='filled' className='my-1' >{state.msg}</Alert>:
-            <>
-              {
-                (state.exist)?
-                <Alert severity='info' variant='filled' className='my-1' key={state.filename}>{state.filename} selected to upload</Alert>:
-                <></>
-              }
-           </>
-          }
       </div>
     </div>
   );

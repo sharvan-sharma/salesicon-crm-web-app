@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import ProductEditor  from './ProductEditor'
 import Status from '../../../utilComponents/Status'
+import Tooltip from '@material-ui/core/Tooltip';
 
 const beautifyDate = (uglydate)=>{
     const date = new Date(uglydate)
@@ -54,17 +55,23 @@ function ProductGrid(props){
             })
     }
 
-    return (<div className='my-4'>
-                    <div className='d-flex shadow p-2  rounded flex-wrap align-items-center justify-content-between'>
-                        <div className='ff-mst bold '>
+    const beautifyName = (name,n)=>{
+        return (name.length > n)?name.substring(0,n)+'...':name
+    }
+
+    return (<div className='my-4 shadow'>
+                    <div className='d-flex  rounded flex-wrap align-items-center justify-content-between'>
+                        <div className='ff-mst bold d-flex align-items-center col-lg-3 col-12 p-1 px-2 d-flex'>
                             <IconButton size='small' onClick={()=>setstate({...state,expand:!state.expand})}>
                                 {(!state.expand)?<ExpandMore/>:<ExpandLess/>}
                             </IconButton>
-                            <label className='m-1'>{props.product.name}</label>
+                            <Tooltip title={props.product.name}  placement="bottom" arrow>
+                                    <span className=' mx-2 text-nowrap' >{beautifyName(props.product.name,20)}</span>
+                            </Tooltip>
+                            <Status type='products' status={props.product.status} product_id={props.product._id} />
                         </div>
-                        <div className='ff-mst bold '>{beautifyDate(props.product.createdAt)}</div>
-                        <Status type='products' status={props.product.status} product_id={props.product._id} />
-                        <div className='d-flex'>
+                        <div className='ff-mst bold col-lg-3 col-6 p-1 px-4'>{beautifyDate(props.product.createdAt)}</div>
+                        <div className='d-flex justify-content-end col-6 col-lg-3 p-1 px-2'>
                             <div className='mr-2'>
                                 <IconButton size='small'  onClick={()=>setstate({...state,openEditor:true})}>
                                     <EditIcon/>
@@ -77,6 +84,7 @@ function ProductGrid(props){
                             </div>
                         </div>
                     </div>
+                    <div className='hr-3' />
                     {(state.openEditor)?<ProductEditor
                                          mode='edit' 
                                          closeEditor={closeEditor}

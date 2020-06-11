@@ -3,11 +3,9 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
+import Navbar from './Navbar'
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Brand from '../components/utilComponents/Brand'
 import SideDrawer from '../components/dashboardComponents/SideDrawer'
 import TabScreens from './TabScreens'
 import {connect} from 'react-redux'
@@ -45,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     backgroundColor:'white',
     flexGrow: 1,
-    padding: theme.spacing(3),
   },
 }));
 
@@ -63,24 +60,16 @@ function DashboardStructure(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar className='d-flex text-dark justify-content-between align-items-center'>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className='mbl fmd'>
-            <Brand color='dark'/>
-          </div>
-        </Toolbar>
+          <Navbar 
+          handleDrawerToggle={handleDrawerToggle}
+          menuButton={classes.menuButton}
+          account_type={props.account_type}
+          screen={props.screen} />
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -113,7 +102,7 @@ function DashboardStructure(props) {
           </Drawer>
         </Hidden>
       </nav>
-      <main className={classes.content} style={{backgroundColor:'white',minHeight:'100vh'}}>
+      <main className={classes.content} style={{backgroundColor:'white',minHeight:'100vh',padding:'1rem'}}>
         <div className={classes.toolbar} />
         <TabScreens screen = {props.screen} account_type={props.account_type} />
       </main>

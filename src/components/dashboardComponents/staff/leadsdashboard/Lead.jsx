@@ -100,6 +100,7 @@ function Lead(props){
         )
       }else{
         return (<>
+            <div className='mbl' style={{marginTop:'10vh'}} />
             <div className='d-flex flex-wrap align-items-center justify-content-between my-2'>
                 <form onSubmit={updateReminder} className='d-flex align-items-center '>
                     <IconButton color='inherit' size='small' type='button' onClick={()=>props.setOpenLead({open:false,lead_id:null})}>

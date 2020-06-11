@@ -49,8 +49,14 @@ function SellersTable(props){
             </div>
         )
     }else{
-        return (<>
-            <div className='col-12 my-4'>
+        return (
+            <>
+            <div className='mbl' style={{marginTop:'10vh'}} />
+            <div className='my-2 ff-mst text-1'>
+                Sellers
+            </div>
+            <div className='hr-3'/>
+            <div className='col-12 p-0 my-4'>
                 {
                     Object.entries(props.staffsObject).map((item)=><SellersGrid key={item[0]} staff={item[1]}/>)
                 }

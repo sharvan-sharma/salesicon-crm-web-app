@@ -16,8 +16,8 @@ const CampaignsGrid = (props)=>{
     })
 
     return (    <div className='my-4'>
-                    <div className='d-flex shadow p-2  rounded flex-wrap align-items-center justify-content-between'>
-                        <div className = 'd-flex align-items-center'>
+                    <div className='d-flex shadow rounded flex-wrap align-items-center justify-content-between'>
+                        <div className = 'd-flex align-items-center py-1 px-2'>
                             <div className='mr-2'>
                                 <IconButton size='small' onClick={()=>setstate({...state,expand:!state.expand})} >
                                     {(!state.expand)?<ExpandMore/>:<ExpandLess/>}
@@ -26,12 +26,14 @@ const CampaignsGrid = (props)=>{
                             {/* <img src={imagePath} className='mr-2' style={{width:'30px',height:'30px'}} alt={props.staff.name.firstname} /> */}
                             <div className='ff-mst bold '>{props.campaign.name}</div>
                         </div>
-                        
+                        <div className='px-2 py-1'>
                             {
                                 (props.campaign.status === 'A')?
-                                <label className='m-1 ff-mst bg-1 text-white rounded-pill px-2 py-1 shadow'>Active</label>:
-                                <label className='m-1 ff-mst bg-light rounded-pill px-2 py-1 shadow'>Inactive</label>
+                                <span className='py-1 px-2 ff-mst bg-1 text-white rounded-pill shadow'>Active</span>:
+                                <span className='py-1 px-2 ff-mst bg-light rounded-pill shadow'>Inactive</span>
                             }
+                        </div>
+                            
                         
                         {/* <Status type='staffs' status={props.campaign.status} campaign_id={props.campaign._id} /> */}
                     </div>

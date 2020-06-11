@@ -60,9 +60,10 @@ function Products(props){
     }else{
         return (
             <>
+            <div className='mbl' style={{marginTop:'10vh'}} />
             <div className='my-2 col-12 p-0 d-flex justify-content-between align-items-center'>
-                <label className='m-1 ff-mst flg text-1'>Products</label>
-                <button className='btn btn-outline-3' onClick={()=>setstate({...state,openEditor:true})} >New</button>
+                <label className='m-1 ff-mst text-1'>Products</label>
+                <button className='btn btn-outline-3 fsm' onClick={()=>setstate({...state,openEditor:true})} >New</button>
             </div>
             {
                 (state.openEditor)?<ProductEditor mode='new' closeEditor={closeEditor} />:<></>

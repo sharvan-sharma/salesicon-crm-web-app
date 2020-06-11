@@ -104,10 +104,13 @@ function LeadForm (props){
 
 
     return(
+        <>
+        <div className='mbl' style={{marginTop:'10vh'}}/>
+        <div className='my-2 ff-mst'>
+            Create <span className='text-1'>Single</span> Lead
+        </div>
+        <div className='hr-3'></div>
         <div className='my-2'>
-            <div className='d-flex justify-content-between align-items-center flex-wrap'>
-                <label className='flg ff-mst m-0'>Add a <span className='text-1'>Lead</span></label>
-            </div>
             <div className='my-2'>
               <form onSubmit={submitForm} className='col-12 p-0 col-md-10 col-lg-6 col-xl-6'>
                 <div className='form-group'>
@@ -213,6 +216,7 @@ function LeadForm (props){
               </form>
             </div>
         </div>
+        </>
     )
 }
 

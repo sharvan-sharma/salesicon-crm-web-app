@@ -50,7 +50,12 @@ function CampaignsTable(props){
         )
     }else{
         return (<>
-            <div className='col-12 my-4'>
+            <div className='mbl' style={{marginTop:'10vh'}}/>
+            <div className='my-2 ff-mst text-1'>
+                Campaigns
+            </div>
+            <div className='hr-3' />
+            <div className='col-12 p-0 my-4'>
                 {
                     Object.entries(props.campaignsObject).map((item)=><CampaignsGrid key={item[0]} campaign={item[1]}/>)
                 }
@@ -63,7 +68,8 @@ function CampaignsTable(props){
                 </Fade>:
                 <></>
                 }
-            </div></>)
+            </div>
+            </>)
     }
 }
 

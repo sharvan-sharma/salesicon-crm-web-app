@@ -40,7 +40,14 @@ function SingleStaff(){
         }
     }
 
-    return (<form onSubmit={submitForm} className='my-4 col-12 p-0' >
+    return (
+    <>
+    <div className='mbl' style={{marginTop:'10vh'}} />
+    <div className='my-2'>
+        Send Registeration link to <span className='text-1' >Single</span> Email Account
+    </div>
+    <div className='hr-3'/>
+    <form onSubmit={submitForm} className='my-4 col-12 p-0' >
                 <div className='my-2'>
                     <label className='m-1 flg ff-mst'>Enter Staff Email</label>
                 </div>
@@ -58,7 +65,7 @@ function SingleStaff(){
                 {
                     <div className='my-2'>
                         {(state.progress)?<CircularProgress/>:
-                        <button type='submit' disabled={state.progress} className='btn btn-3 my-2'>Send Regsitration Link</button>
+                        <button type='submit' disabled={state.progress} className='btn btn-3 my-2 fsm'>Send Regsitration Link</button>
                         }
                     </div>
                 }
@@ -71,7 +78,8 @@ function SingleStaff(){
                         <></>}
                 </div>
                 {(state.success)?<MessageSnackbar show={state.success} message='Mail Scheduled' />:<></>}
-            </form>)
+            </form>
+            </>)
 }
 
 export default SingleStaff

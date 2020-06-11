@@ -12,21 +12,44 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 let menu = {
-  campaigns:{
-    filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
-    sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
-            {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'}
-          ]
-  },
-  leads:{
-    filters:[{code:'status',valuesArray:[{text:'Rejected',val:'Rejected'},{text:'Converted',val:'Converted'},{text:'Pending',val:'Pending'}]},
-             {code:'source',valuesArray:[{text:'Online Source',val:'online'},{text:'Offline Source',val:'offline'}]}
-            ],
-    sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
-            {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'},
-            {text:'Dob',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'dob'}
-          ]
-  }
+  'staff':{
+            'staff-c':{
+              filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
+              sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
+                      {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'}
+                    ]
+            },
+            'staff-l':{
+              filters:[{code:'status',valuesArray:[{text:'Rejected',val:'Rejected'},{text:'Converted',val:'Converted'},{text:'Pending',val:'Pending'}]},
+                      {code:'source',valuesArray:[{text:'Online Source',val:'online'},{text:'Offline Source',val:'offline'}]}
+                      ],
+              sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
+                      {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'},
+                      {text:'Dob',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'dob'}
+                    ]
+            }
+    },
+    'admin':{
+            'admin-c':{
+              filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
+              sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
+                      {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'}
+                    ]
+            },
+            'admin-s':{
+              filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
+              sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
+                      {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'},
+                      {text:'Dob',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'dob'}
+                    ]
+            },
+            'admin-p':{
+              filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
+              sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
+                      {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'}
+                    ]
+            },
+    },
 }
 
 function SearchBarFilters(props){
@@ -58,13 +81,13 @@ function SearchBarFilters(props){
       setstate({...state,open:false,applied:v})
     }else{
       props.makeFiltersChangeRequest({applied:v,filters:{},sortby:{}})
-      setstate({filters:[],sortby:[],open:false,applied:v,flag:!props.flag})
+      setstate({filters:{},sortby:{},open:false,applied:v})
     }
   }
 
 return (
-  <div>
-    <div className='d-flex p-1 align-items-center rounded'>
+  <div className='mr-2 ' >
+    <div className='d-flex p-1 align-items-center rounded text-1'>
       <label className='text-muted m-1'>Filters</label>
       <Badge badgeContent={Object.entries(state.filters).length+Object.entries(state.sortby).length} color="primary">
         <IconButton size='small' color='inherit' onClick={()=>{
@@ -79,12 +102,13 @@ return (
       </Badge>
     </div>
   {(state.open)?<Grow in={state.open}>
-    <div className='p-4 shadow-lg bg-white searchbar-filters'>
+    <div className='p-4 shadow-lg bg-white searchbar-filters' style={{maxHeight:'70vh',overflowY:'scroll'}}>
         <div className='d-flex flex-wrap ' >
           <div>
-              <label className='ff-mst text-dark'>Filters</label>
+           <label className='ff-mst text-dark'>Filters</label>
+           <div className='d-flex flex-wrap'>
                 {
-                  menu[props.type].filters.map((elep,index)=>{
+                  menu[props.account_type][props.type].filters.map((elep,index)=>{
                   return (<div key={index}>
                     <label className='ff-mst m-1 text-muted'>{elep.code}</label>
                     {
@@ -116,20 +140,21 @@ return (
                   })
                 }
           </div>
+          </div>
           <div >
               <label className='ff-mst text-dark'>Sort by</label>
               <div className='d-flex flex-wrap'>
                {
-                menu[props.type].sortby.map((ele,index)=>{
+                menu[props.account_type][props.type].sortby.map((ele,index)=>{
                   return (
-                    <div key={index} className='p-3'>
+                    <div key={index} className='p-2 text-dark fsm'>
                         <FormControl  component="fieldset">
                           <FormLabel component="legend">{ele.text}</FormLabel>
                           <RadioGroup  name={ele.text} 
                             value={(state.sortby[ele.code] !== undefined)?state.sortby[ele.code]:0}
                             onChange={(e)=>handleChange(e.target.value,ele.code)}>
                             {
-                              ele.valuesArray.map(ele=><FormControlLabel  key={ele.val} value={ele.val} control={<Radio />} label={ele.text} />)
+                              ele.valuesArray.map(ele=><FormControlLabel  key={ele.val} value={ele.val} control={<Radio size='small' />} label={ele.text} />)
                             }
                           </RadioGroup>
                         </FormControl>

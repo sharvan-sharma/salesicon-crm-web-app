@@ -7,6 +7,7 @@ import Fade from '@material-ui/core/Fade'
 import Alert from '@material-ui/lab/Alert'
 import LinearProgress from '../../../utilComponents/LinearProgress'
 import Brand from '../../../utilComponents/Brand'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const LeadGrid = (props)=>{
 
@@ -18,13 +19,24 @@ const LeadGrid = (props)=>{
         }
     }
 
+     const beautifyName = (name,n)=>{
+        return (name.length > n)?name.substring(0,n)+'...':name
+    }
+
+
     return (
-                    <div className='d-flex shadow p-2 my-4 rounded flex-wrap align-items-center justify-content-between'>
-                        <div className='ff-mst bold '>{props.lead.name.firstname}</div>
-                        <div className='ff-mst bold '>{props.lead.email}</div>
-                        <div className='text-1 ff-mst '>{props.lead.phone}</div>
-                        <div className='ff-mst '><span className={getStyleClass(props.lead.status)}>{props.lead.status}</span></div>
-                        <button className='btn btn-3' onClick={()=>props.setOpenLead({open:true,lead:props.lead})}>Open</button>
+                    <div className='d-flex shadow my-4 rounded flex-wrap align-items-center justify-content-between'>
+                        <div className='px-3 py-1 d-flex col-12 col-lg-4'>
+                            <Tooltip title={props.lead.name.firstname} placement='bottom' arrow>
+                                    <span className='ff-mst mr-3'>{beautifyName(props.lead.name.firstname,20)}</span>
+                            </Tooltip>
+                            <div className='ff-mst '><span className={getStyleClass(props.lead.status)}>{props.lead.status}</span></div>
+                        </div>
+                        <div className='ff-mst col-12 col-lg-4 px-3 py-1'>{props.lead.email}</div>
+                        <div className='d-flex justify-content-between align-items-center col-12 col-lg-4 px-3 py-1'>
+                            <div className='text-1 ff-mst '>{props.lead.phone}</div>
+                            <button className='btn btn-3 fsm' onClick={()=>props.setOpenLead({open:true,lead:props.lead})}>Open</button>
+                        </div>
                     </div>
     )
 }
@@ -72,9 +84,12 @@ function LeadsTable(props){
         )
       }else{
         return (<>
-        
-        <SearchBar type='leads'/>
-        <div className='col-12 my-4'>
+       <div className='mbl' style={{marginTop:'10vh'}} /> 
+        <div className='col-12 my-1 p-0 d-flex justify-content-between'>
+                <label className='ff-mst text-1' >Leads</label>
+        </div>
+        <div className='hr-3' />
+        <div className='col-12 p-0 my-4'>
             {
                 Object.entries(props.leadsObject).map((item)=><LeadGrid key={item[0]}  lead={item[1]} setOpenLead={props.setOpenLead}/>)
             }

@@ -67,7 +67,8 @@ function Status(props){
                     <span className='text-muted'>Inactive</span>
                     }
                 </button>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown" 
+                style={{position:'absolute',left:0,minWidth:'auto',transform:'none !important',willChange:'unset'}}>
                     <button  className="dropdown-item" onClick={changeStatus} >
                         {(props.status === 'A')?
                         <span className='text-muted ff-mst'>Inactive</span>:

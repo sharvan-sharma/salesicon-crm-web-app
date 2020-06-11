@@ -13,6 +13,7 @@ import Menu2 from './campaigns/Menu2'
 import LinearProgress from '../../utilComponents/LinearProgress'
 import Brand from '../../utilComponents/Brand'
 import CircularProgress from '../../utilComponents/CircularProgress'
+import { Tooltip } from '@material-ui/core'
 
 const CampaignDate = (props)=>{
     let date = new Date(props.datetime)
@@ -50,11 +51,19 @@ const Campaign = (props)=>{
         })
     }
 
+    const beautifyName = (name,n)=>{
+        return (name.length > n)?name.substring(0,n)+'...':name
+    }
+
     return (<>
-                    <div className='d-flex shadow p-2 my-4 rounded align-items-center justify-content-between'>
-                        <div className='ff-mst bold'>{props.campaign.name}</div>
-                        <div className='ff-mst bold'><CampaignDate datetime={props.campaign.createdAt} /></div>
-                        <Menu2 status={props.campaign.status} key={props.campaign._id} campaign_id ={props.campaign._id}/>
+                    <div className='d-flex shadow flex-wrap my-4 rounded align-items-center justify-content-between'>
+                        <div className='d-flex align-items-center px-3 py-1 col-12 col-lg-4'>
+                            <Tooltip title={props.campaign.name} placement='bottom' arrow>
+                                    <span className='ff-mst mr-3'>{beautifyName(props.campaign.name,20)}</span>
+                            </Tooltip>
+                            <Menu2 status={props.campaign.status} key={props.campaign._id} campaign_id ={props.campaign._id}/>
+                        </div>
+                        <div className='ff-mst bold col-6 col-lg-4 px-3 py-1'><CampaignDate datetime={props.campaign.createdAt} /></div>
                         <div className='text-1 d-flex'>
                              <div>
                                 <IconButton size='small' className='mr-2' color='inherit' onClick={()=>props.openEditor({open:true,mode:'edit',id:props.campaign._id})}>
@@ -126,13 +135,14 @@ function Campaigns(props){
         </div>
     )
   }else{
-    return (<> 
-            <SearchBar type='campaigns' />
-            <div className='col-12 my-2'>
+    return (<>
+            <div className='mbl' style={{marginTop:'10vh'}} /> 
+            <div className='col-12 my-1 p-0 d-flex justify-content-between align-items-center'>
+                <span className='ff-mst text-1' >Campaigns</span>
                 <button className='btn btn-3 text-nowrap fsm' onClick={()=> openEditor({open:true,mode:'new',id:null})}>ADD NEW</button>
             </div>
-        
-        <div className='col-12 my-2'>
+            <div className='hr-3'/>
+            <div className='col-12 p-0 my-2'>
             {
                 Object.entries(props.campaignsObject).map((item)=><Campaign key={item[0]} deleteCampaign={props.deleteCampaign} campaign={item[1]} openEditor={openEditor} />)
             }

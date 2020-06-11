@@ -11,37 +11,44 @@ import {setUserPhoto} from '../../../redux/user/user.actions'
 
 function ProfileImage(props){
 
-    const [open,setOpen] = useState(false)
-    const [File,setFile] = useState(null)
-    const [err,seterr] = useState({exist:false,msg:''})
-    const [progress,setprogress] = useState(false)
-    const [update,setupdate] = useState(false)
 
-    
+    const [state,setstate] = useState({
+        file:null,
+        open:false,
+        error:{exist:false,msg:''},
+        progress:false,
+        update:false
+    })
+
+    const setFile = (file,error)=>{
+        if(error.exist){
+            setstate({...state,file:null,error})
+        }else{
+            setstate({...state,file})
+        }
+     }
 
     const submitForm = (e)=>{
         e.preventDefault()
-        if(File === null){
-            seterr({exist:true,msg:'file not selected'})
+        if(state.file === null){
+            setstate({...state,error:{exist:true,msg:'Image not selected'}})
         }else{
-            setprogress(true)
+            setstate({...state,progress:true})
             let formdata = new FormData()
-            formdata.append('file',File)
+            formdata.append('file',state.file)
             axios.post('/changeprofilephoto',formdata,{withCredentials:true,headers:{'Content-Type':'multipart/form-data'}})
             .then(result=>{
-                 setprogress(false)
                  switch(result.data.status){
-                     case 200:props.setUserPhoto(result.data.photo);setFile(null);setOpen(false);setupdate(!update);break;
-                     case 401:seterr({exist:true,msg:'Unauthorised to change photo'});break;
-                     case 455:seterr({exist:true,msg:'file size limit exceeds'});break;
-                     case 422:seterr({exist:true,msg:`Can't change photo of user that doesn't exist`});break;
-                     case 500:seterr({exist:true,msg:'server error'});break;
+                     case 200:props.setUserPhoto(result.data.photo);setstate({...state,file:null,open:false,update:!state.update});break;
+                     case 401:setstate({...state,progress:false,error:{exist:true,msg:'Unauthorised to Upload'}});break;
+                     case 455:setstate({...state,progress:false,error:{exist:true,msg:'Filesize limit exceed'}});break;
+                     case 422:setstate({...state,progress:false,error:{exist:true,msg:`Can't change photo of user that doesn't exist`}});break;
+                     case 500:setstate({...state,progress:false,error:{exist:true,msg:'server error'}});break;
                      default:console.log('defaul exec profile image')
                  }
             })
             .catch(err=>{
-                setprogress(false)
-                seterr({exist:true,msg:'server error'})
+                setstate({...state,progress:false,error:{exist:true,msg:'server error'}})
             })
         }
         
@@ -51,45 +58,39 @@ function ProfileImage(props){
     return (
         <div className='col-12 col-md-4 col-lg-3 flex-column d-flex align-items-center'>
             {
-            (File === null)?
+            (state.file === null)?
                 <>
                 {
                 (props.photo === null)?
                 <img style={{width:'100%'}} src='/avatar.jpg'/>
-                :<>
-                {
-                    (update)?
-                    <img style={{width:'100%'}} key='t'  src={`http://localhost:5000${props.photo}`}/>:
-                    <img style={{width:'100%'}} key='f' src={`http://localhost:5000${props.photo}`}/>
-                }
-                </>
+                :<img style={{width:'100%'}} key='f' src={`http://localhost:5000${props.photo}`}/>
                 }
                 </>
             
             :
-            <div className='form-group preview'>
-                <img style={{width:'100%'}} src={URL.createObjectURL(File)}/>
-            </div>
+            <img style={{width:'100%'}} src={URL.createObjectURL(state.file)}/>
             }
-            {(!open)?<button onClick={()=>setOpen(true)} className='fsm btn btn-light my-2 shadow rounded ff-mst'>Change</button>:<></>}
-            {(open)?
+            {(!state.open)?<button onClick={()=>setstate({...state,open:true})} className='fsm btn btn-light my-2 shadow rounded ff-mst'>Change</button>:<></>}
+            {(state.open)?
             <form onSubmit={submitForm}>
-                <div className='form-group' onFocus={()=>seterr({exist:false,msg:''})}>
+                <div className='form-group' onFocus={()=>setstate({...state,error:{exist:false,msg:''}})}>
                     <FileUpload setFile={setFile} fileType='image' maxSize={500000} />
-                    {/* <input type='file' required className='form-control' onChange={(e)=>setFile(e.target.files[0])}/> */}
+                    {
+                        (state.file !== null)?<Alert severity='info' variant='filled'>{state.file.name} selected to Upload</Alert>:<></>
+                    }
                 </div>
                 <div className='d-flex justify-content-between align-items-center'>
-                    <button type='button' disabled={progress} onFocus={()=>seterr({exist:false,msg:''})} onClick={()=>{setFile(null);setOpen(false)}} className='btn shadow btn-danger'>Cancel</button>
-                    {(progress)?<CircularProgress/>:
-                    <button type='submit' disabled={progress} onFocus={()=>seterr({exist:false,msg:''})} className='btn btn-3 shadow'>Upload</button>
+                    <button type='button' disabled={state.progress} onClick={()=>setstate({...state,error:{exist:false,msg:''},file:null,open:false})} className='btn shadow btn-danger'>Cancel</button>
+                    {(state.progress)?<CircularProgress/>:
+                    <button type='submit' disabled={state.progress} onFocus={()=>setstate({...state,error:{exist:false,msg:''}})} className='btn btn-3 shadow'>Upload</button>
                     }
                 </div> 
             </form>
             :<></>}
 
-            {(err.exist)?
+            {(state.error.exist)?
             <div className='my-2'>
-                <Alert severity="error" variant="filled">{err.msg}</Alert>
+                <Alert severity="error" variant="filled">{state.error.msg}</Alert>
             </div>:<></>}
         </div>     
     )
