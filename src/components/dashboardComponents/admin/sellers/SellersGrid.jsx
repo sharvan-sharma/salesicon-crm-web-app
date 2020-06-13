@@ -38,7 +38,7 @@ const SellersGrid = (props)=>{
                                 <span className='text-success ff-mst mr-3'>Converted</span>
                                 <span className='text-dark ff-mst'>{props.staff.count}</span>
                             </div>:<></>}
-                        <div className='d-flex justify-content-between align-items-center px-3 py-1 col-12 col-lg-6'>
+                        <div className='d-flex flex-wrap justify-content-between align-items-center px-3 py-1 col-12 col-lg-6'>
                                 <div className='ff-mst bold'>{props.staff.email}</div>
                                 <div className='text-1 ff-mst '>{props.staff.phone}</div>
                         </div>

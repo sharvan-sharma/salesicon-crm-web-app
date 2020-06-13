@@ -1,6 +1,6 @@
 import React from 'react'
 import LeadForm from './createleads/LeadForm'
-import {Switch,Route} from 'react-router-dom'
+import {Switch,Route,Link} from 'react-router-dom'
 import UploadComponent from '../../utilComponents/UploadComponent'
 
 function CreateLeads(props){
@@ -14,7 +14,7 @@ return (<>
         <div className='my-2'>
             <div className='d-flex justify-content-between align-items-center flex-wrap'>
                 <label className='flg ff-mst m-0'>Upload a <span className='text-1'>.xls</span> file</label>
-                <button className='btn btn-3 fsm text-nowrap'>Download Template (.xls) File</button>
+                <a href='http://localhost:5000/templatefiles/leads_template_file.xls' className='btn btn-3 fsm text-nowrap'>Download Template (.xls) File</a>
             </div>
             <UploadComponent  fileType='xls' maxSize={50000} url='/staffapi/lead/createmultiple' />
         </div>

@@ -19,7 +19,7 @@ function SingleStaff(){
         <div className='col-12 p-0 my-2'>
             <div className='flg ff-mst my-2 d-flex justify-content-between align-items-center flex-wrap'>
                 <label className='m-1'>Upload Staff Emails <span className='text-1'>(.xls)</span> File</label>
-                <button className='btn btn-outline-3 fsm' >Download template (.xls) File</button>
+                <a href='http://localhost:5000/templatefiles/staff_emails_template.xls' className='btn btn-outline-3 fsm' >Download template (.xls) File</a>
             </div>
             <UploadComponent fileType='xls' maxSize={50000} url='/adminapi/send/registerlink/multiple'/>
         </div>
