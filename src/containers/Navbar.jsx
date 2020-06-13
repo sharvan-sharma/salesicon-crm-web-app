@@ -8,20 +8,45 @@ import {Switch,Link,Route} from 'react-router-dom'
 const getSearchbar = (screen,account_type)=>{
     if(account_type === 'staff'){
         switch(screen){
-            case 0 : return <SearchBar type='staff-l' account_type={account_type}/>
+            case 0 : return <StaffLeadsRouter account_type={account_type} />
             case 1 : return <SearchBar type='staff-c' account_type={account_type}/>
             case 2 : return <AddLeadsRouter />
             default: return <></>
         }
     }else{
         switch(screen){
-            case 0 : return <SearchBar type='admin-c' account_type={account_type} />
-            case 2 : return <SearchBar type='admin-s' account_type={account_type} />
+            case 0 : return <AdminDashboardRouter account_type={account_type} />
+            case 2 : return <AdminStaffRouter account_type={account_type} />
             case 4 : return <SearchBar type='admin-p' account_type={account_type} />
             case 3 : return <AddStaffRouter />
             default: return <></>
         }
     }
+}
+
+const StaffLeadsRouter =(props)=>{
+    return (
+        <Switch>
+            <Route exact path = '/dashboard' component={()=><></>} />
+            <Route exact path = '/dashboard/leads' component={()=><SearchBar type='staff-l' account_type={props.account_type}/>} />
+        </Switch>
+    )
+}
+
+const AdminStaffRouter = (props)=>{
+            return(<Switch>
+                    <Route exact path = '/sellers' component={()=><SearchBar type='admin-s' account_type={props.account_type} /> }/>
+                    <Route exact path = '/sellers/top5' component={()=><></>}  />
+                    <Route exact path = '/sellers/bottom5' component={()=><></>}  />
+                </Switch>)
+}
+
+const AdminDashboardRouter = (props)=>{
+            return(<Switch>
+                    <Route exact path = '/dashboard' component={()=><SearchBar type='admin-c' account_type={props.account_type} /> }/>
+                    <Route exact path = '/dashboard/top5' component={()=><></>}  />
+                    <Route exact path = '/dashboard/bottom5' component={()=><></>}  />
+                </Switch>)
 }
 
 const AddStaffRouter = ()=>{

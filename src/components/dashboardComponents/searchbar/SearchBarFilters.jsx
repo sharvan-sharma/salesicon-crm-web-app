@@ -40,7 +40,6 @@ let menu = {
               filters:[{code:'status',valuesArray:[{text:'Inactive',val:'IA'},{text:'Active',val:'A'}]}],
               sortby:[{text:'Name',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'name'},
                       {text:'Creation date',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'createdAt'},
-                      {text:'Dob',valuesArray:[{text:'ASC',val:1},{text:'DESC',val:-1},{text:'none',val:0}],code:'dob'}
                     ]
             },
             'admin-p':{

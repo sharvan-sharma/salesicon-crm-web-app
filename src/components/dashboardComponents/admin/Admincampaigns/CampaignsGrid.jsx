@@ -26,6 +26,10 @@ const CampaignsGrid = (props)=>{
                             {/* <img src={imagePath} className='mr-2' style={{width:'30px',height:'30px'}} alt={props.staff.name.firstname} /> */}
                             <div className='ff-mst bold '>{props.campaign.name}</div>
                         </div>
+                         {(props.mode === 'report')?<div className='col-12 col-lg-3 d-flex align-items-center px-3 py-1'>
+                                <span className='text-success ff-mst mr-3'>Converted</span>
+                                <span className='text-dark ff-mst'>{props.campaign.count}</span>
+                        </div>:<></>}
                         <div className='px-2 py-1'>
                             {
                                 (props.campaign.status === 'A')?
@@ -42,10 +46,10 @@ const CampaignsGrid = (props)=>{
                         (state.expand)?
                         <div className='px-0 py-4 d-flex flex-wrap bg-light shadow-lg'>
                              <div className = 'col-12 col-md-6 col-lg-6 d-flex flex-column align-items-center p-2'>
-                                <WeeklyGraph type='campaigns' _id={props.campaign._id} createdAt={props.createdAt} />
+                                <WeeklyGraph type='campaigns' _id={props.campaign._id} createdAt={props.campaign.createdAt} />
                             </div>
                              <div className = 'col-12 col-md-6 col-lg-6 d-flex flex-column align-items-center p-2'>
-                                <MonthlyGraph type='campaigns' _id={props.campaign._id} createdAt={props.createdAt} />
+                                <MonthlyGraph type='campaigns' _id={props.campaign._id} createdAt={props.campaign.createdAt} />
                             </div>
                         </div> 
                         :<></>

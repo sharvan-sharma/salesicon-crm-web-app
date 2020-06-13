@@ -18,6 +18,7 @@ import LeadProfile from './lead/LeadProfile'
 import LeadInteraction from './lead/LeadInteraction'
 import CreateLeadInteraction from './lead/CreateLeadInteraction'
 import LeadStatus  from './lead/LeadStatus'
+import {Link } from 'react-router-dom'
 
 
 const beautyfyDate = (date)=>{
@@ -43,9 +44,11 @@ function Lead(props){
     let month = ((date.getMonth()+1) < 10)?'0'+(date.getMonth()+1):(date.getMonth()+1)
     let day = (date.getDate() < 10)?'0'+date.getDate():date.getDate()
     let mindate = year+'-'+month+'-'+day
+
+    const lead = props.leadsObject[props.lead_id]
   
     useEffect(()=>{
-        axios.post('/staffapi/leadinteraction/read',{lead_id:props.lead._id},{withCredentials:true})
+        axios.post('/staffapi/leadinteraction/read',{lead_id:lead._id},{withCredentials:true})
         .then(result=>{
             switch(result.data.status){
                 case 423:setstate({loading:false,error:true,msg:`vlidation error type:${result.data.type}`});break;
@@ -61,7 +64,7 @@ function Lead(props){
     const updateReminder = (e)=>{
         e.preventDefault()
         axios.post('/staffapi/updatereminder',
-        {lead_id:props.lead._id,
+        {lead_id:lead._id,
          rem_date:remdate.current.value},
          {withCredentials:true})
          .then(result=>{
@@ -102,47 +105,50 @@ function Lead(props){
         return (<>
             <div className='mbl' style={{marginTop:'10vh'}} />
             <div className='d-flex flex-wrap align-items-center justify-content-between my-2'>
-                <form onSubmit={updateReminder} className='d-flex align-items-center '>
-                    <IconButton color='inherit' size='small' type='button' onClick={()=>props.setOpenLead({open:false,lead_id:null})}>
+                <Link to={(props.type === 't-calls')?'/dashboard':'/dashboard/leads'} className='text-decoration-none text-dark bg-light rounded-circle'>
                         <BackIcon/>
-                    </IconButton>
-                    <label  className='text-dark m-1 text-nowrap'>Next Call Scheduled Date</label>
-                    {(reminderMode !==  'edit')?<label  className='text-1 m-1'>{(props.leadsObject[props.lead._id].rem_date)?beautyfyDate(props.leadsObject[props.lead._id].rem_date):'--/--/---'}</label>:<></>}
-                    {(reminderMode !==  'edit')?
-                     <IconButton size='small' type='button' onClick={()=>setReminderMode('edit')} onFocus={()=>seterr2({exist:false,msg:''})}>
-                        <EditIcon />
-                    </IconButton>:<></>}
+                </Link>
+                <form onSubmit={updateReminder} className='d-flex text-white rounded p-2 align-items-center bg-black '>
+                    <label  className='m-1 text-nowrap'>
+                        {(lead.status === 'Pending')?'Next Call Scheduled Date':'Last Call Scheduled Date'}
+                    </label>
+                    {(reminderMode !==  'edit')?<label  className=' m-1'>{(lead.rem_date)?beautyfyDate(lead.rem_date):'--/--/---'}</label>:<></>}
+                    {(reminderMode !==  'edit' && lead.status === 'Pending')?
+                        <IconButton size='small' type='button' color='inherit' onClick={()=>setReminderMode('edit')} onFocus={()=>seterr2({exist:false,msg:''})}>
+                            <EditIcon />
+                        </IconButton>:
+                        <></>
+                    }
                     {(reminderMode === 'edit')?
                     <input type='date'
                      min={mindate} 
                      ref={remdate}
                      onFocus={()=>seterr2({exist:false,msg:''})}
                      className='form-control' required />:<></>}
-                    {(reminderMode === 'edit')?
+                    {(reminderMode === 'edit' && lead.status === 'Pending')?
                     <>
-                    <IconButton size='small' type='submit' onFocus={()=>seterr2({exist:false,msg:''})}>
+                    <IconButton size='small' type='submit' color='inherit' onFocus={()=>seterr2({exist:false,msg:''})}>
                         <CheckIcon />
                     </IconButton>
-                      <IconButton size='small' type='button' onClick={()=>setReminderMode('unedit')}>
+                      <IconButton size='small' type='button' color='inherit' onClick={()=>setReminderMode('unedit')}>
                         <CancelIcon />
                     </IconButton>
                     </>:<></>}
                     {(err2.exist)?<Fade in={err.exist}><Alert severity='error' variant='filled' >{err2.msg}</Alert></Fade>:<></>}
                 </form>
-                <LeadStatus lead_id={props.lead._id} status={props.lead.status} />
-                
+                <LeadStatus lead_id={lead._id} status={lead.status} />
             </div>
             <div className='hr-3'></div>
             <div className='d-flex flex-wrap'>
                
-                <LeadProfile lead={props.lead}  />
+                <LeadProfile lead={lead}  />
                 <div className='col-12 col-md-8 col-lg-8 col-xl-8 my-4  '  >
                     <div className='d-flex justify-content-between align-items-center'>
                             <label className='flg ff-mst my-2'><span className='text-1'>Lead </span>Interactions</label>
-                           {(props.lead.status === 'Pending' && !add)?<div><IconButton color='inherit' size='small' onClick={()=>setAdd(true)}><AddIcon/></IconButton></div>:<></>}
+                           {(lead.status === 'Pending' && !add)?<div><IconButton color='inherit' size='small' onClick={()=>setAdd(true)}><AddIcon/></IconButton></div>:<></>}
                     </div>
                     
-                    {(add && props.lead.status === 'Pending')?<CreateLeadInteraction setAdd={setAdd} lead_id={props.lead._id} />:<></>}
+                    {(add && lead.status === 'Pending')?<CreateLeadInteraction setAdd={setAdd} lead_id={lead._id} />:<></>}
                     
                     <div className='lead-interaction bg-light' style={{height:'60vh'}}>
                         {(Object.entries(props.leadInteractionsObject).length === 0)?

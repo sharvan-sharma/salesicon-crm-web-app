@@ -11,10 +11,10 @@ import IconButton from '@material-ui/core/IconButton';
 
 
 const linksObject = {
-    staff:[  {text:'Dashboard',to:'/',content:0},
+    staff:[  {text:'Dashboard',to:'/dashboard',content:0},
                       {text:'Campaigns',to:'/campaigns',content:0},
                       {text:'Add Leads',to:'/addleads',content:0}],
-    admin:[  {text:'Dashboard',to:'/',content:0},
+    admin:[  {text:'Dashboard',to:'/dashboard',content:0},
                      {text:'Conversions',to:'/conversions',content:0},
                      {text:'Sellers',to:'/sellers',content:0},
                      {text:'Send Registration Link',to:'/addstaff',content:0},

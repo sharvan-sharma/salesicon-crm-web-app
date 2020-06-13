@@ -22,7 +22,7 @@ const SellersGrid = (props)=>{
 
     return (    <div className='my-4 shadow'>
                     <div className='d-flex  rounded flex-wrap align-items-center justify-content-between'>
-                        <div className = 'col-12 col-lg-6  d-flex align-items-center px-2 py-1 '>
+                        <div className = 'col-12 col-lg-4  d-flex align-items-center px-2 py-1 '>
                             <div className='mr-2'>
                                 <IconButton size='small' onClick={()=>setstate({...state,expand:!state.expand})} >
                                     {(!state.expand)?<ExpandMore/>:<ExpandLess/>}
@@ -34,18 +34,25 @@ const SellersGrid = (props)=>{
                             </Tooltip>
                             <Status type='staffs' status={props.staff.status} staff_id={props.staff._id} />
                         </div>
-                        <div className='ff-mst bold px-3 py-1  '>{props.staff.email}</div>
-                        <div className='text-1 ff-mst px-3 py-1 '>{props.staff.phone}</div>
+                        {(props.mode === 'report')?<div className='d-flex align-items-center px-3 py-1 col-12 col-lg-2'>
+                                <span className='text-success ff-mst mr-3'>Converted</span>
+                                <span className='text-dark ff-mst'>{props.staff.count}</span>
+                            </div>:<></>}
+                        <div className='d-flex justify-content-between align-items-center px-3 py-1 col-12 col-lg-6'>
+                                <div className='ff-mst bold'>{props.staff.email}</div>
+                                <div className='text-1 ff-mst '>{props.staff.phone}</div>
+                        </div>
+                        
                     </div>
                     <div  className='hr-3' />
                     {
                         (state.expand)?
                         <div className='px-0 py-4 d-flex flex-wrap bg-light shadow-lg'>
                             <div className = 'col-12 col-md-6 col-lg-6 d-flex flex-column align-items-center p-2'>
-                                <WeeklyGraph type='staffs'  _id={props.staff._id} createdAt={props.createdAt} />
+                                <WeeklyGraph type='staffs'  _id={props.staff._id} createdAt={props.staff.createdAt} />
                             </div>
                             <div className = 'col-12 col-md-6 col-lg-6 d-flex flex-column align-items-center p-2'>
-                                <MonthlyGraph type='staffs' _id={props.staff._id} createdAt={props.createdAt} />
+                                <MonthlyGraph type='staffs' _id={props.staff._id} createdAt={props.staff.createdAt} />
                             </div>
                         </div> 
                         :<></>
