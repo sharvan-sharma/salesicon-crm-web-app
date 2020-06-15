@@ -4,6 +4,7 @@ import Fade from '@material-ui/core/Fade'
 import {Link} from 'react-router-dom'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {faGoogle} from '@fortawesome/free-brands-svg-icons'
 import Alert from '@material-ui/lab/Alert'
 import axios  from 'axios'
 import {setCurrentUser} from '../../redux/user/user.actions'
@@ -102,11 +103,15 @@ function LoginForm(props){
                         <Link to={'/forgotpassword'+((props.type === 'admin')?'/admin':'/staff')} className='btn btn-link fsm p-0'>Forgot Password ?</Link>
                         <button className='btn btn-3' type='submit' disabled={progress}>Sign in</button>
                     </div>
-                     {/* <p className='text-center my-2'>------------<span className='text-muted fm'> or </span>--------------</p>
+                    {(props.type === 'admin')?
+                    <>
+                    <p className='text-center my-2'>------------<span className='text-muted fm'> or </span>--------------</p>
                     <div className='d-flex justify-content-center m-3'>
-                       <a href='https://noteskeeper-md.herokuapp.com/crypt/oauth/login' className='btn btn-dark btn-block' >
-                           Login Using  <span><b>C</b></span>ry<span><b>P</b></span>t<span className='fm'>Oauth2.0</span></a>
-                    </div> */}
+                       <a href='http://localhost:5000/admin/auth/google' className='btn btn-dark btn-block' >
+                           Login with Google <FontAwesomeIcon icon={faGoogle}/>
+                        </a>
+                    </div>
+                    </>:<></>}
                     <div className='mt-5 fsm text-nowrap ff-mst d-flex justify-content-center'>
                         {(props.type === 'admin')?
                             <span>Don't have an Account?

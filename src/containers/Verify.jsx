@@ -58,6 +58,17 @@ function VerifyEmail(props){
             </Alert>
         )
     }
+
+    const OauthMessage = ()=>{
+        return (
+            <Alert variant='filled' severity='info'>
+                <p className='h4'>Your Account is Successfully Verified </p>
+                <p>Now, Your account is under approval . 
+                    <br/> We will Notify you when your Account is Approved.
+                </p>
+            </Alert>
+        )
+    }
     
     const relUrl = ()=>{
         switch(props.type){
@@ -69,7 +80,9 @@ function VerifyEmail(props){
 
     
     useEffect(()=>{
-        if(props.token === undefined || props.token.length < 20){
+        if(props.type === 'oauth'){
+            setstate({...state,flag:1,component:()=><OauthMessage />})
+        }else if(props.token === undefined || props.token.length < 20){
             history.push('/')
         }else{
             axios.post(relUrl(),{token:props.token,type:props.type},{withCredentials:true})

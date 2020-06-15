@@ -63,7 +63,7 @@ function ProfileImage(props){
                 {
                 (props.photo === null)?
                 <img style={{width:'100%'}} src='/avatar.jpg'/>
-                :<img style={{width:'100%'}} key='f' src={`http://localhost:5000${props.photo}`}/>
+                :<img style={{width:'100%'}} key='f' src={props.photo}/>
                 }
                 </>
             

@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 const SellersGrid = (props)=>{
 
-    const imagePath = (props.staff.photo === null)?'/avatar.jpg':'http://localhost:5000'+props.staff.photo
+    const imagePath = (props.staff.photo === null)?'/avatar.jpg':props.staff.photo
 
     const [state,setstate] = useState({
         expand:false

@@ -105,7 +105,10 @@ function App(props) {
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
                         return <Verify type='approved' token = {token} />
-                      }}/>/>
+                      }}/>
+                  <Route exact path='/oauth' component={(prop)=>{
+                        return <Verify type='oauth' />
+                      }}/>
                   <Route exact path='/contact' component={Contact} />
                   <Route exact path='/about' component={About} />
                   <Route component={Page404}/>
