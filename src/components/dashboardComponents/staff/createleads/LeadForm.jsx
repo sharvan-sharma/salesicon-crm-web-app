@@ -1,4 +1,4 @@
-import React,{useRef,useState} from 'react'
+import React,{useRef,useState,useEffect} from 'react'
 import {connect} from 'react-redux'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/material.css'
@@ -9,6 +9,8 @@ import CircularProgress from '../../../utilComponents/CircularProgress'
 import Alert from '@material-ui/lab/Alert'
 import MessageSnackbar from '../../../utilComponents/MessageSnackbar'
 import {isEmail,isPhone,checkName} from '../../../../utils/validations/index'
+import LeadProducts from './LeadProducts'
+
 
 function LeadForm (props){
 
@@ -18,33 +20,17 @@ function LeadForm (props){
     const email = useRef('')
     const dob = useRef('')
     const loc = useRef('')
-    
-    const [products,setProducts] = useState({sel:{},rem:props.productsObject})
+
+    const [products,setProducts] = useState({sel:{},rem:{}})
     const [campaign_id,setCampaignId] = useState(null)
     const [phone,setphone] = useState({value:'',ccode:null,formattedValue:null})
     const [err,seterr] = useState({exist:false,msg:''})
     const [success,setsuccess] = useState(false)
     const [progress,setprogress] = useState(false)
 
-    
-
-    const addProduct = (id)=>{
-        const remobj = products.rem
-        const selobj = products.sel
-        selobj[id] = remobj[id]
-        delete remobj[id]
-        setProducts({sel:{...selobj},rem:{...remobj}})
-    }
-    const removeProduct = (id)=>{
-        const remobj = products.rem
-        const selobj = products.sel
-        remobj[id] = selobj[id]
-        delete selobj[id]
-        setProducts({sel:{...selobj},rem:{...remobj}})
-    }
 
     const validate = data=>{
-        const {lead_name,email,dob,location,interested_in,campaign_id} = data
+        const {lead_name,email,dob,location,interested_in,campaign_id,phone} = data
         if(!lead_name || !checkName(lead_name)){
             return {flag:false,msg:'Spaces Are not Allowed in Firstname'}
         }else if(!email || !isEmail(email)){
@@ -156,32 +142,7 @@ function LeadForm (props){
                     <label>Location</label>
                     <input className='form-control' onFocus={()=>seterr({exist:false,msg:''})} ref={loc} minLength={1} maxLength={50} required type='text' id='loc'/>
                 </div>
-                {/* selected products */}
-                <div className='d-flex col-12 p-0 flex-wrap my-2'>
-                           {Object.entries(products.sel).map(item=>{
-                               return (<label key={item[0]} className='bg-light rounded-pill px-2 m-1' onFocus={()=>seterr({exist:false,msg:''})} >
-                                            <span>{item[1].name}</span>
-                                            <IconButton size='small' onClick={()=>removeProduct(item[0])} color='inherit'>
-                                                <CancelIcon/>
-                                            </IconButton>
-                                        </label>)
-                           }) }
-                </div>
-                {/* products dropdown */}
-                <div className="form-group">
-                    <button type="button" onFocus={()=>seterr({exist:false,msg:''})} className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Products
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-right">
-                        {
-                            Object.entries(products.rem).map(item=><button key={item[0]} 
-                                                                            onClick={()=>addProduct(item[0])}
-                                                                            className="dropdown-item" type="button">
-                                                                                {item[1].name}
-                                                                            </button>)
-                        }
-                    </div>
-                </div>
+                <LeadProducts setProducts={setProducts} />
                 {/* campaigns dropdown */}
                 <div className="form-group">
                     <button type="button" onFocus={()=>seterr({exist:false,msg:''})} className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -212,7 +173,7 @@ function LeadForm (props){
                     <Alert severity='error' variant='filled'>{err.msg}</Alert>
                 </div>:<></>}
                 {(success)?
-                <MessageSnackbar show={true} message='mail sent' />:<></>}
+                <MessageSnackbar show={true} message='Mail scheduled' />:<></>}
               </form>
             </div>
         </div>
@@ -231,10 +192,9 @@ const dropdownObject = (defaultObject)=>{
     return obj
 }
 
-
 const mapStateToPorps = (state)=>({
-    campaignsObject:dropdownObject(state.campaigns.campaignsObject),
-    productsObject:dropdownObject(state.products.productsObject)
+    campaignsObject:dropdownObject(state.campaigns.campaignsObject)
 })
+
 
 export default connect(mapStateToPorps)(LeadForm) 

@@ -62,13 +62,13 @@ function ProfileImage(props){
                 <>
                 {
                 (props.photo === null)?
-                <img style={{width:'100%'}} src='/avatar.jpg'/>
-                :<img style={{width:'100%'}} key='f' src={props.photo}/>
+                <img style={{width:'100%'}} className='rounded shadow' src='/avatar.jpg'/>
+                :<img style={{width:'100%'}} className='rounded shadow' key='f' src={props.photo}/>
                 }
                 </>
             
             :
-            <img style={{width:'100%'}} src={URL.createObjectURL(state.file)}/>
+            <img style={{width:'100%'}} className='rounded shadow' src={URL.createObjectURL(state.file)}/>
             }
             {(!state.open)?<button onClick={()=>setstate({...state,open:true})} className='fsm btn btn-light my-2 shadow rounded ff-mst'>Change</button>:<></>}
             {(state.open)?

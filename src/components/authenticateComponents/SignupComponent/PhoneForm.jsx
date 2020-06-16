@@ -1,7 +1,5 @@
 import React,{useRef,useState} from 'react'
-import TextField from '@material-ui/core/TextField'
 import Alert from '@material-ui/lab/Alert'
-import LinearProgress from '../../utilComponents/LinearProgress'
 import Fade from '@material-ui/core/Fade'
 import PhoneInput from 'react-phone-input-2'
 import {isPhone} from '../../../utils/validations/index'

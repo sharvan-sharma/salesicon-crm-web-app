@@ -32,7 +32,17 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return ({
                 ...state,
                 photo:action.payload
-            })
+            });
+        case userActionTypes.SET_USER_NAME:
+            return ({
+                ...state,
+                name:action.payload
+            });
+        case userActionTypes.SET_USER_PHONE:
+            return ({
+                ...state,
+                phone:action.payload
+            });
         default:
             return state
     }
