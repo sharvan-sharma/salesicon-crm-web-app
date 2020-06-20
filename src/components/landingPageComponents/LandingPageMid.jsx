@@ -17,7 +17,7 @@ export default function LandingPageMid(){
                             </p>
                         </Zoom>
                         <Zoom in={true} timeout={{appear:5000,exit:1000,enter:3000}}>
-                            <Link to='/login' className='btn btn-warning text-white ff-mst my-2'>GET STARTED NOW</Link>
+                            <Link to='/login/admin' className='btn btn-warning text-white ff-mst my-2'>GET STARTED NOW</Link>
                         </Zoom>
                     </div>
                 </Zoom>

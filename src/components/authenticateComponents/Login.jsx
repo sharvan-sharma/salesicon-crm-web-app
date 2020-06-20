@@ -107,7 +107,8 @@ function LoginForm(props){
                     <>
                     <p className='text-center my-2'>------------<span className='text-muted fm'> or </span>--------------</p>
                     <div className='d-flex justify-content-center m-3'>
-                       <a href='http://localhost:5000/admin/auth/google' className='btn btn-dark btn-block' >
+                       <a href='http://ec2-13-232-47-180.ap-south-1.compute.amazonaws.com/admin/auth/google' className='btn btn-dark btn-block'> 
+                       {/* <a href='http://localhost:5000/admin/auth/google' className='btn btn-dark btn-block'>  */}
                            Login with Google <FontAwesomeIcon icon={faGoogle}/>
                         </a>
                     </div>

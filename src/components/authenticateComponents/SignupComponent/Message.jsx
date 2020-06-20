@@ -3,6 +3,8 @@ import Alert from '@material-ui/lab/Alert'
 import LinearProgress from '../../utilComponents/LinearProgress'
 import axios from 'axios'
 import history from '../../../history'
+import {connect} from 'react-redux'
+import {setCurrentUser} from '../../../redux/user/user.actions'
 
 function Message (props) {
 
@@ -25,6 +27,7 @@ function Message (props) {
         let status = result.data.status
         if(status === 200){
             if(props.data.type === 'staff'){
+                props.setCurrentUser(result.data)
                 history.push('/')
             }else{
                 setupload({...upload,flag:false})
@@ -65,4 +68,10 @@ function Message (props) {
 
 }
 
-export default Message
+
+const mapDispatchToProps = dispatch =>({
+    setCurrentUser:data=>dispatch(setCurrentUser(data))
+})
+
+
+export default connect(null,mapDispatchToProps)(Message)

@@ -8,6 +8,7 @@ import AdminCampaigns from '../components/dashboardComponents/admin/AdminCampaig
 import AdminConversions from '../components/dashboardComponents/admin/AdminConversions'
 import AddStaff from '../components/dashboardComponents/admin/AddStaff'
 import AddProducts from '../components/dashboardComponents/admin/AddProducts'
+import {Redirect} from 'react-router-dom'
 
 const TabScreens = (props)=>{
     if(props.account_type === 'staff'){
@@ -16,7 +17,7 @@ const TabScreens = (props)=>{
             case 0: return <LeadsDashboard />
             case 1: return <Campaigns/> 
             case 2: return <CreateLeads/>
-            default: return <LeadsDashboard/>
+            default: return <Redirect to ='/404' />
         }
     }else{
         switch(props.screen){
@@ -26,7 +27,7 @@ const TabScreens = (props)=>{
             case 2: return <Sellers/>
             case 3: return <AddStaff/>
             case 4: return <AddProducts/>
-            default: return <AdminCampaigns/>
+            default: return <Redirect to ='/404' />
         }
     }
 }
