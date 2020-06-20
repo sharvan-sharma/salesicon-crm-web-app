@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component {
                         <p className='fxl my-4'><Brand color='light'/></p>
                         <p className='fxl text-danger ff-mst mb-0' >We're fixing it</p>
                         <p className='bold text-white mt-0 fsm'>This Page is having some technical hiccups. We know about the Problem and we're working to get things back to normal quickly.</p>
-                        <p className='my-4'><a href='http://localhost:3000' className='text-decoration-none rounded-pill text-dark btn ff-mst btn-light'>Back To <b>S</b>ales<b>I</b>con</a></p>
+                        <p className='my-4'><a href='https://salesicon-crm.web.app' className='text-decoration-none rounded-pill text-dark btn ff-mst btn-light'>Back To <b>S</b>ales<b>I</b>con</a></p>
                     </div>
       </div>)
     }

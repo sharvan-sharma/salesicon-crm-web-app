@@ -7,8 +7,9 @@ const INITIAL_STATE = {
 
 const readAllProducts = async ()=>{
     try{
-        let result = await axios.get('http://ec2-13-232-47-180.ap-south-1.compute.amazonaws.com/staffapi/campaign/readallcampaigns',{withCredentials:true})
+        // let result = await axios.get('http://ec2-13-232-47-180.ap-south-1.compute.amazonaws.com/staffapi/campaign/readallcampaigns',{withCredentials:true})
         // let result = await axios.get('http://localhost:5000/staffapi/campaign/readallcampaigns',{withCredentials:true})
+        let result = await axios.get('https://salesicon.herokuapp.com/staffapi/campaign/readallcampaigns',{withCredentials:true})
         let obj = {}
         await result.data.campaignsArray.forEach((campaign)=>{
                 obj[campaign._id] = campaign

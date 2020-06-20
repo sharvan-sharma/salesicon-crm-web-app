@@ -8,8 +8,9 @@ import store from './redux/store'
 import ErrorBoundary from './ErrorBoundary'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://ec2-13-232-47-180.ap-south-1.compute.amazonaws.com'
+// axios.defaults.baseURL = 'http://ec2-13-232-47-180.ap-south-1.compute.amazonaws.com'
 // axios.defaults.baseURL = 'http://localhost:5000'
+axios.defaults.baseURL = 'https://salesicon.herokuapp.com'
 axios.defaults.withCredentials = true
 
 ReactDOM.render(
