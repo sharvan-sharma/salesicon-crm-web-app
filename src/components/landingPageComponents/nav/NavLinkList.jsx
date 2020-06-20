@@ -5,9 +5,9 @@ export default function NavLinkList(){
     return (
         <ul className="navbar-nav mx-auto text-dark">
                 <li className="nav-item dropdown mr-4">
-                    <a className="nav-link dropdown-toggle text-secondary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button className="nav-link dropdown-toggle text-secondary"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dashboard
-                    </a>
+                    </button>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                         <Link className="nav-link text-secondary" to="/login/staff">Staff Dashboard</Link>
                         <div className='hr-3' />
