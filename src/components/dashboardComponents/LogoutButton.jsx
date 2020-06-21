@@ -21,13 +21,13 @@ function LogoutButton(props){
         setprogress(true)
         axios.get('/logout',{withCredentials:true})
         .then(result=>{
+            props.setCurrentUser(result.data)
+            history.push('/') 
             props.setProductsObject([])
             props.setCampaignsObject([])
             props.setLeadsObject([])
             props.setLeadInteractionsObject([])
             props.setStaffsObject([])
-            props.setCurrentUser(result.data)
-            history.push('/') 
         })
         .catch(err=>{
             setprogress(false)
