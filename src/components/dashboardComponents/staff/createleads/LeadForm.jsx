@@ -52,8 +52,6 @@ function LeadForm (props){
 
     const submitForm = (e)=>{
         e.preventDefault()
-        setprogress(true)
-        let phoneNumber = phone.formattedValue.split(' ').pop()
         let dataObj = {
             lead_name:{
                 firstname:fname.current.value,
@@ -65,10 +63,11 @@ function LeadForm (props){
             location:loc.current.value,
             interested_in:Object.entries(products.sel).map(item=>item[0]),
             campaign_id,
-            phone:phoneNumber
+            phone: (phone.formattedValue === null)?null:phone.formattedValue.split(' ').pop()
         }
         let result = validate(dataObj)
         if(result.flag){
+            setprogress(true)
             axios.post('/staffapi/lead/createone',dataObj,{withCredentials:true})
             .then(result=>{
                 setprogress(false)
@@ -142,7 +141,9 @@ function LeadForm (props){
                     <label>Location</label>
                     <input className='form-control' onFocus={()=>seterr({exist:false,msg:''})} ref={loc} minLength={1} maxLength={50} required type='text' id='loc'/>
                 </div>
-                <LeadProducts setProducts={setProducts} />
+                <div onFocus={()=>seterr({exist:false,msg:''})}>
+                        <LeadProducts setProducts={setProducts} />
+                </div>
                 {/* campaigns dropdown */}
                 <div className="form-group">
                     <button type="button" onFocus={()=>seterr({exist:false,msg:''})} className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -162,9 +163,9 @@ function LeadForm (props){
               {/* buttons */}
                 <div className='d-flex'>
                      <div>
-                        {(progress)?
+                        {(progress )?
                         <CircularProgress/>:
-                        <button type='submit' disabled={progress} onFocus={()=>seterr({exist:false,msg:''})}  className='btn btn-3'>Add Lead</button>
+                        <button type='submit' disabled={progress || err.exist} onFocus={()=>seterr({exist:false,msg:''})}  className='btn btn-3'>Add Lead</button>
                         }
                     </div>
                 </div>
