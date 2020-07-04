@@ -85,7 +85,7 @@ function Contact(){
     const clearError = (type) => {
         switch(type){
             case 'name':setstate({...state,error:{...state.error,name:{exist:false,msg:''}}});break;
-            case 'email':setstate({...state,error:{...state.error,name:{exist:false,msg:''}}});break;
+            case 'email':setstate({...state,error:{...state.error,email:{exist:false,msg:''}}});break;
             case 'server':setstate({...state,
                 success:{exist:false,msg:''},
                 error:{
