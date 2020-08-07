@@ -14,9 +14,13 @@ const AddStaff = React.lazy(()=>import('../components/dashboardComponents/admin/
 const AddProducts =  React.lazy(()=>import('../components/dashboardComponents/admin/AddProducts'))
 
 const Loader = ()=>(
-    <div className ='d-flex justify-content-center align-items-center'>
-        <Brand color='dark' />
-        <LinearProgress/>
+    <div className ='d-flex justify-content-center align-items-center col-12' style={{height:'100vh'}}>
+         <div className='col-12 col-md-4 col-lg-4 col-xl-3 d-flex flex-column align-items-center'>
+            <div className='my-2'>
+                <Brand color='dark' />
+            </div>
+            <LinearProgress />
+         </div>
     </div>
 )
 
