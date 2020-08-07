@@ -1,15 +1,8 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,Suspense} from 'react';
 import axios from 'axios'
-import PreLoader from './components/utilComponents/PreLoader'
+import Preloader from './components/utilComponents/PreLoader'
 import ServerError from './components/utilComponents/ServerError'
-import Page404 from './containers/Page404'
-import LandingPage from './containers/LandingPage'
-import Authenticate from './containers/Authenticate'
-import Verify from './containers/Verify'
-import ResetPassword from './containers/ResetPassword'
 import DashboardRouter from './containers/DashboardRouter'
-import Contact from './containers/Contact'
-import About from './containers/About'
 import {Route,Switch,Redirect} from 'react-router-dom'
 import querystring from 'query-string'
 import {setCurrentUser} from './redux/user/user.actions'
@@ -19,6 +12,15 @@ import 'popper.js/dist/popper'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './styles/main.css'
+
+const Contact = React.lazy(()=>import('./containers/Contact'))
+const About = React.lazy(()=>import('./containers/About'))
+const ResetPassword = React.lazy(()=>import('./containers/ResetPassword'))
+const Verify = React.lazy(()=>import('./containers/Verify'))
+const Authenticate = React.lazy(()=>import('./containers/Authenticate'))
+const LandingPage = React.lazy(()=>import('./containers/LandingPage'))
+const Page404 = React.lazy(()=>import('./containers/Page404'))
+
 
 const typesArray = ['admin','staff']
 
@@ -46,7 +48,7 @@ function App(props) {
    },[])
 
   if (screen.loading) {
-    return <PreLoader/>
+    return <Preloader/>
   }else if (screen.error){
     return <ServerError/>
   } else {
@@ -59,13 +61,13 @@ function App(props) {
               </Switch>)
     } else {
       return (<Switch>
-                  <Route exact path='/' component={LandingPage} />
+                  <Route exact path='/' component={()=>(<Suspense fallback={<Preloader/>}><LandingPage/></Suspense>)} />
                   <Route path='/login/:type' component={(prop)=>{
                     const type = prop.match.params.type
                     if(typesArray.includes(type)){
-                      return <Authenticate page={1} type={type} />
+                      return (<Suspense fallback={<Preloader/>}><Authenticate page={1} type={type} /></Suspense>)
                     }else{
-                      return <Page404/>
+                      return (<Suspense fallback={<Preloader/>}><Page404/></Suspense>)
                     }
                   }} />
                   <Route path='/signup/:type'  component={(prop)=>{
@@ -74,44 +76,44 @@ function App(props) {
                       if(type  === 'staff'){
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
-                        return <Authenticate page={2} type={type} token={token} />
+                        return (<Suspense fallback={<Preloader/>}><Authenticate page={2} type={type} token={token} /></Suspense>)
                       }else{
-                        return <Authenticate page={2} type={type}/>
+                        return (<Suspense fallback={<Preloader/>}><Authenticate page={2} type={type}/></Suspense>)
                       }
                     }else{
-                      return <Page404/>
+                      return (<Suspense fallback={<Preloader/>}><Page404/></Suspense>)
                     }
                   }}/>
                   <Route path='/forgotpassword/:type'  component={(prop)=>{
                     const type = prop.match.params.type
                     if(typesArray.includes(type)){
-                      return <Authenticate page={3} type={type} />
+                      return (<Suspense fallback={<Preloader/>}><Authenticate page={3} type={type} /></Suspense>)
                     }else{
-                      return <Page404/>
+                      return (<Suspense fallback={<Preloader/>}><Page404/></Suspense>)
                     }
                   }} />
                   <Route exact path='/resetpassword' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
                         const type = val.type
-                        return <ResetPassword token = {token} type={type} />
+                        return (<Suspense fallback={<Preloader/>}><ResetPassword token = {token} type={type} /></Suspense>)
                       }}/>
                   <Route path='/verifyemail' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
-                        return <Verify type='verified' token = {token} />
+                        return (<Suspense fallback={<Preloader/>}><Verify type='verified' token = {token} /></Suspense>)
                       }}/>
                   <Route exact path='/approval' component={(prop)=>{
                         const val = querystring.parse(prop.location.search)
                         const token = val.token
-                        return <Verify type='approved' token = {token} />
+                        return (<Suspense fallback={<Preloader/>}><Verify type='approved' token = {token} /></Suspense>)
                       }}/>
                   <Route exact path='/oauth' component={(prop)=>{
-                        return <Verify type='oauth' />
+                        return (<Suspense fallback={<Preloader/>}><Verify type='oauth' /></Suspense>)
                       }}/>
-                  <Route exact path='/contact' component={Contact} />
-                  <Route exact path='/about' component={About} />
-                  <Route component={Page404}/>
+                  <Route exact path='/contact' component={()=>(<Suspense fallback={<Preloader/>}><Contact/></Suspense>)} />
+                  <Route exact path='/about' component={()=>(<Suspense fallback={<Preloader/>}><About/></Suspense>)} />
+                  <Route component={()=>(<Suspense fallback={<Preloader/>}><Page404/></Suspense>)}/>
               </Switch>)
     }
   }
